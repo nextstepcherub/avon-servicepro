@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-avon-primary: #0054A6;
+  --color-avon-secondary: #0077C8;
+  --color-avon-accent: #00AEEF;
+  --color-avon-success: #22C55E;
+  --color-avon-warning: #F59E0B;
+  --color-avon-danger: #DC2626;
+  --color-avon-bg: #F0F6FF;
+  --color-avon-card: #FFFFFF;
+  --color-avon-text: #1E293B;
+}
+
+:root {
+  --primary: #0054A6;
+  --secondary: #0077C8;
+  --accent: #00AEEF;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #DC2626;
+  --background: #F0F6FF;
+  --card: #FFFFFF;
+  --text: #1E293B;
+}
+
+body {
+  background: linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 50%, #EEF2FF 100%);
+  color: #1E293B;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+@keyframes aurora {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-aurora {
+  background-size: 200% 200%;
+  animation: aurora 8s ease infinite;
+}
+
+.bg-mesh-colorful {
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(0, 174, 239, 0.12) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 90%, rgba(34, 197, 94, 0.10) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(245, 158, 11, 0.10) 0px, transparent 50%);
+}
+
+/* Vibrant modern scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00AEEF, #0054A6);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #6366F1, #0077C8);
+}
+
+

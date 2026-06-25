@@ -1,0 +1,6 @@
+{
+  "name": "AVON ServicePro",
+  "description": "Enterprise service management app for AVON Pharmo Chem: Instrument registry, installation, warranty, repair, calibration, KPI charts, and SQL/architecture exporter.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,131 @@
+================================================================================
+AVON ServicePro Enterprise Database V1.0 - Schema Compatibility Audit Report
+================================================================================
+Target Environment: Supabase PostgreSQL (Production-Grade)
+Audit Timestamp: 2026-07-16
+Audited Tables: public.roles, public.user_profiles, public.user_roles, public.engineer_tags, public.user_engineer_tags
+
+--------------------------------------------------------------------------------
+1. TABLE: public.roles
+--------------------------------------------------------------------------------
+* Existing Columns in DB:
+  - id (UUID, primary key)
+  - active (BOOLEAN)
+  - created_at (TIMESTAMPTZ)
+* Target Columns in Migration:
+  - name (VARCHAR(100) UNIQUE, missing)
+  - description (TEXT, missing)
+  - level (INTEGER, default 1, missing)
+  - updated_at (TIMESTAMPTZ, missing)
+  - created_by (UUID, missing)
+  - updated_by (UUID, missing)
+  - deleted_at (TIMESTAMPTZ, missing)
+* Extra Columns: None
+* Missing Columns: name, description, level, updated_at, created_by, updated_by, deleted_at
+* Constraints to verify/add:
+  - UNIQUE(name)
+  - DEFAULT level = 1
+  - DEFAULT active = true
+
+--------------------------------------------------------------------------------
+2. TABLE: public.user_profiles
+--------------------------------------------------------------------------------
+* Existing Columns in DB:
+  - id (UUID, references auth.users(id), primary key)
+  - full_name (VARCHAR(150))
+  - active (BOOLEAN)
+  - created_at (TIMESTAMPTZ)
+* Target Columns in Migration:
+  - email (VARCHAR(255) UNIQUE, missing)
+  - name (VARCHAR(150), missing)
+  - role (VARCHAR(100), missing)
+  - tags (TEXT, missing)
+  - avatarUrl (TEXT, missing)
+  - territory (VARCHAR(100), missing)
+  - passwordHash (VARCHAR(255), missing)
+  - role_v2 (public.avon_role, missing)
+  - engineer_tags (public.engineer_tag[], missing)
+  - phone_number (VARCHAR(50), missing)
+  - department (VARCHAR(100), missing)
+  - avatar_url (TEXT, missing)
+  - is_active (BOOLEAN, missing)
+  - updated_at (TIMESTAMPTZ, missing)
+  - created_by (UUID, missing)
+  - updated_by (UUID, missing)
+  - deleted_at (TIMESTAMPTZ, missing)
+* Extra Columns: None
+* Missing Columns: email, name, role, tags, avatarUrl, territory, passwordHash, role_v2, engineer_tags, phone_number, department, avatar_url, is_active, updated_at, created_by, updated_by, deleted_at
+* Constraints to verify/add:
+  - UNIQUE(email)
+  - FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE
+  - DEFAULT active = true
+  - DEFAULT is_active = true
+
+--------------------------------------------------------------------------------
+3. TABLE: public.user_roles
+--------------------------------------------------------------------------------
+* Existing Columns in DB:
+  - id (UUID, primary key)
+  - user_id (UUID)
+  - role_id (UUID)
+  - active (BOOLEAN)
+* Target Columns in Migration:
+  - created_at (TIMESTAMPTZ, missing)
+  - updated_at (TIMESTAMPTZ, missing)
+  - created_by (UUID, missing)
+  - updated_by (UUID, missing)
+  - deleted_at (TIMESTAMPTZ, missing)
+* Extra Columns: None
+* Missing Columns: created_at, updated_at, created_by, updated_by, deleted_at
+* Constraints to verify/add:
+  - UNIQUE(user_id, role_id)
+  - FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON DELETE CASCADE
+  - FOREIGN KEY (role_id) REFERENCES public.roles(id) ON DELETE CASCADE
+
+--------------------------------------------------------------------------------
+4. TABLE: public.engineer_tags
+--------------------------------------------------------------------------------
+* Existing Columns in DB:
+  - id (UUID, primary key)
+  - active (BOOLEAN)
+* Target Columns in Migration:
+  - tag (VARCHAR(100) UNIQUE, missing)
+  - description (TEXT, missing)
+  - created_at (TIMESTAMPTZ, missing)
+  - updated_at (TIMESTAMPTZ, missing)
+  - created_by (UUID, missing)
+  - updated_by (UUID, missing)
+  - deleted_at (TIMESTAMPTZ, missing)
+* Extra Columns: None
+* Missing Columns: tag, description, created_at, updated_at, created_by, updated_by, deleted_at
+* Constraints to verify/add:
+  - UNIQUE(tag)
+
+--------------------------------------------------------------------------------
+5. TABLE: public.user_engineer_tags
+--------------------------------------------------------------------------------
+* Existing Columns in DB:
+  - id (UUID, primary key)
+  - user_id (UUID)
+  - tag_id (UUID)
+* Target Columns in Migration:
+  - active (BOOLEAN, missing)
+  - created_at (TIMESTAMPTZ, missing)
+  - updated_at (TIMESTAMPTZ, missing)
+  - created_by (UUID, missing)
+  - updated_by (UUID, missing)
+  - deleted_at (TIMESTAMPTZ, missing)
+* Extra Columns: None
+* Missing Columns: active, created_at, updated_at, created_by, updated_by, deleted_at
+* Constraints to verify/add:
+  - UNIQUE(user_id, tag_id)
+  - FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON DELETE CASCADE
+  - FOREIGN KEY (tag_id) REFERENCES public.engineer_tags(id) ON DELETE CASCADE
+
+================----------------------------------------------------------------
+CONCLUSIONS & MIGRATION PATH:
+- Do not drop tables. Use CREATE TABLE IF NOT EXISTS.
+- Alter existing tables with ADD COLUMN IF NOT EXISTS to seamlessly append missing attributes.
+- Ensure all constraints (UNIQUE, FOREIGN KEY) are dynamically added using safe ALTER patterns.
+- Keep RLS and triggers fully compatible with both pre-existing and newly added columns.
+================================================================================

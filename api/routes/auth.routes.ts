@@ -17,8 +17,8 @@ router.get('/me', sessionMiddleware, getMe);
 router.get('/supabase-verify', authenticateSupabase, (req, res) => {
   res.json({
     status: 'success',
-    authMode: req.supabaseContext?.authMode,
-    userClaims: req.supabaseContext?.userClaims,
+    authMode: (req as any).supabaseContext?.authMode,
+    userClaims: (req as any).supabaseContext?.userClaims,
   });
 });
 

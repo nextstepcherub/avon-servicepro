@@ -32,6 +32,7 @@ it('should perform the complete Service Job workflow, assign engineers, log repo
   await dbPool.query('DELETE FROM employee_kpi_assignments WHERE employeeId = ?', [engineerId]);
   await dbPool.query('DELETE FROM kpi_master WHERE name IN ("Service SLA Compliance", "Customer Satisfaction Index")');
   await dbPool.query('DELETE FROM service_jobs WHERE serialNumber = ?', [serialNumber]);
+  await dbPool.query('DELETE FROM service_jobs WHERE assignedEngineerId = ?', [engineerId]);
 
   console.log('2. Seeding KPI Master definition and Employee KPI Assignments...');
   // Seed Master KPI definitions

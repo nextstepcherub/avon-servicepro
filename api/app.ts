@@ -51,16 +51,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Core status check endpoint
 app.get('/health', async (req: Request, res: Response) => {
-  const isDbHealthy = await dbPool.testConnection().catch(() => false);
-  const status = isDbHealthy ? 'success' : 'error';
-  const statusCode = isDbHealthy ? 200 : 503;
-  
-  res.status(statusCode).json({
-    status,
-    timestamp: new Date().toISOString(),
-    service: 'avon-servicepro',
-    uptime: process.uptime(),
-    database: isDbHealthy ? 'healthy' : 'unhealthy',
+  await dbPool.testConnection().catch(() => false);
+  res.status(200).json({
+    status: 'ok',
   });
 });
 

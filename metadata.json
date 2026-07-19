@@ -1,6 +1,0 @@
-{
-  "name": "AVON ServicePro",
-  "description": "AVON PHARMO CHEM (PVT) LTD Service Centre - Enterprise Service Management System. Complete tracking for scientific equipment installations, warranty/non-warranty repairs, calibrations, workshop jobs, customer satisfaction (NPS/QR), and weighted KPI metrics across all user roles.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

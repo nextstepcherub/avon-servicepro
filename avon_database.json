@@ -557,8 +557,8 @@
       "slaStatus": "IN_COMPLIANCE"
     },
     {
-      "id": "sreq-a04ccb5b",
-      "ticketNumber": "AVN-SRQ-296613",
+      "id": "sreq-9f5e8cfa",
+      "ticketNumber": "AVN-SRQ-583943",
       "status": "CLOSED",
       "slaDaysSetting": 3,
       "slaStatus": "IN_COMPLIANCE",
@@ -571,9 +571,9 @@
       "subject": "Optics calibration drift detected",
       "description": "The green laser fluorescence reading is showing a 15% drift off-calibration limits. System needs manual alignments.",
       "priority": "HIGH",
-      "createdAt": "2026-07-19T12:45:37.992Z",
-      "updatedAt": "2026-07-19T12:45:37.997Z",
-      "resolvedAt": "2026-07-19T12:45:37.996Z",
+      "createdAt": "2026-07-19T14:24:58.204Z",
+      "updatedAt": "2026-07-19T14:24:58.208Z",
+      "resolvedAt": "2026-07-19T14:24:58.208Z",
       "downTimeHours": 4,
       "estimatedCost": 145000,
       "billingApproved": 1
@@ -584,22 +584,22 @@
   "installations": [],
   "service_request_assignments": [
     {
-      "id": "sra-101c38dc",
-      "requestId": "sreq-a04ccb5b",
+      "id": "sra-7403e715",
+      "requestId": "sreq-9f5e8cfa",
       "assignedEngineerId": "usr-eng-alice",
       "assignedEngineerName": "Alice Devine",
       "targetResolutionDate": "2026-07-21",
       "remarks": "Alice is lead optics specialist, assigning her to handle drift.",
-      "createdAt": "2026-07-19T12:45:37.994Z"
+      "createdAt": "2026-07-19T14:24:58.206Z"
     }
   ],
   "service_request_audit_logs": [
     {
-      "id": "aud-69abda21",
-      "requestId": "sreq-a04ccb5b",
+      "id": "aud-82c1ebf5",
+      "requestId": "sreq-9f5e8cfa",
       "action": "ASSIGNED",
       "remarks": "Alice is lead optics specialist, assigning her to handle drift.",
-      "createdAt": "2026-07-19T12:45:37.995Z"
+      "createdAt": "2026-07-19T14:24:58.207Z"
     }
   ],
   "audit_logs": [
@@ -645,7 +645,7 @@
   ],
   "service_jobs": [
     {
-      "id": "job-887b7e4a",
+      "id": "job-28330bf1",
       "serialNumber": "SRQ-TEST-888",
       "jobType": "Calibration",
       "status": "CLOSED",
@@ -653,12 +653,12 @@
       "brand": "THERMO SCIENTIFIC",
       "model": "Polymerase Chain Reaction Cycler",
       "priority": "Urgent",
-      "createdAt": "2026-07-19T12:45:37.992Z",
+      "createdAt": "2026-07-19T14:24:58.205Z",
       "assignedEngineerId": "usr-eng-alice",
       "assignedEngineerName": "Alice Devine"
     },
     {
-      "id": "job-4425239e",
+      "id": "job-13f1c0aa",
       "jobType": "Calibration",
       "status": "Completed",
       "priority": "Routine",
@@ -668,13 +668,13 @@
       "serialNumber": "JOB-TEST-999",
       "createdById": "usr-admin-1",
       "createdByRole": "Admin",
-      "createdAt": "2026-07-19T12:45:38.929Z",
+      "createdAt": "2026-07-19T14:24:59.001Z",
       "assignedEngineerId": "usr-eng-bob",
       "assignedEngineerName": "Bob Builder",
       "calibrationData": "{\"measurements\":{\"voltageLine\":\"230V\",\"temperatureAccuracy\":\"99.8%\",\"pressureOffset\":\"0.02 Bar\"},\"calibrationDate\":\"2026-07-16\",\"certificateNumber\":\"CAL-CERT-999-BOB\",\"invoiceAmount\":18500,\"reportType\":\"Calibration Certificate\"}"
     },
     {
-      "id": "job-0469af84",
+      "id": "job-76511284",
       "jobType": "Workshop Job",
       "status": "Closed",
       "priority": "Urgent",
@@ -684,10 +684,10 @@
       "serialNumber": "WS-TEST-888",
       "createdById": "usr-admin-1",
       "createdByRole": "Admin",
-      "createdAt": "2026-07-19T12:45:38.932Z",
+      "createdAt": "2026-07-19T14:24:59.006Z",
       "assignedEngineerId": "usr-eng-bob",
       "assignedEngineerName": "Bob Builder",
-      "calibrationData": "{\"measurements\":{\"laserIntensity\":\"11.5 mW\",\"inputVoltage\":\"230V AC\",\"chamberPressure\":\"0.05 mbar\"},\"acceptanceDate\":\"2026-07-19T12:45:38.933Z\",\"itemSerialNumber\":\"WS-TEST-888\",\"institute\":\"General Hospital Kandy\",\"departmentSection\":\"Workshop Bench #4\",\"contactName\":\"Dr. Samantha\",\"contactNumber\":\"0771234567\",\"warrantyStatus\":\"Non-Warranty\",\"partsReceivedWithItem\":\"Main Unit, Cables\",\"takenByDeliveryPerson\":\"Courier services\",\"repairSteps\":[\"Resoldered laser power IC block\",\"Calibrated sensor gain offset\"],\"testResult\":\"Pass\",\"testHours\":4,\"reportType\":\"Workshop Repair Report\"}"
+      "calibrationData": "{\"measurements\":{\"laserIntensity\":\"11.5 mW\",\"inputVoltage\":\"230V AC\",\"chamberPressure\":\"0.05 mbar\"},\"acceptanceDate\":\"2026-07-19T14:24:59.007Z\",\"itemSerialNumber\":\"WS-TEST-888\",\"institute\":\"General Hospital Kandy\",\"departmentSection\":\"Workshop Bench #4\",\"contactName\":\"Dr. Samantha\",\"contactNumber\":\"0771234567\",\"warrantyStatus\":\"Non-Warranty\",\"partsReceivedWithItem\":\"Main Unit, Cables\",\"takenByDeliveryPerson\":\"Courier services\",\"repairSteps\":[\"Resoldered laser power IC block\",\"Calibrated sensor gain offset\"],\"testResult\":\"Pass\",\"testHours\":4,\"reportType\":\"Workshop Repair Report\"}"
     }
   ],
   "kpi_master": [
@@ -722,22 +722,38 @@
       "weight": 50,
       "targetValue": "9.0/10",
       "roleType": "Engineer"
+    },
+    {
+      "id": "kpi-a4dae700",
+      "name": "Service SLA Compliance",
+      "description": "Optics and service completion SLA compliance rates",
+      "weight": 50,
+      "targetValue": "95%",
+      "roleType": "Engineer"
+    },
+    {
+      "id": "kpi-ba27ffaa",
+      "name": "Customer Satisfaction Index",
+      "description": "Feedback and Net Promoter Scores from clients",
+      "weight": 50,
+      "targetValue": "9.0/10",
+      "roleType": "Engineer"
     }
   ],
   "employee_kpi_assignments": [
     {
-      "id": "eka-c0c34b38",
+      "id": "eka-c6af79cd",
       "employeeId": "usr-eng-bob",
-      "kpiId": "kpi-0f0fe142",
+      "kpiId": "kpi-a4dae700",
       "financialYearId": "FY2026",
       "currentValue": "0% SLA Met",
       "score": 0,
       "errorsCount": 0
     },
     {
-      "id": "eka-3c57a8fd",
+      "id": "eka-e046f856",
       "employeeId": "usr-eng-bob",
-      "kpiId": "kpi-5eb6618f",
+      "kpiId": "kpi-ba27ffaa",
       "financialYearId": "FY2026",
       "currentValue": "No client reviews yet",
       "score": 0,

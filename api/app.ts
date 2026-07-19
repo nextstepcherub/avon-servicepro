@@ -57,6 +57,13 @@ app.get('/health', async (req: Request, res: Response) => {
   });
 });
 
+app.get('/api/health', async (req: Request, res: Response) => {
+  await dbPool.testConnection().catch(() => false);
+  res.status(200).json({
+    status: 'ok',
+  });
+});
+
 // Test environment keys endpoint
 app.get('/api/test-env', (req: Request, res: Response) => {
   res.json({

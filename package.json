@@ -4,12 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "PORT=3000 tsx api/server.ts",
-    "build": "vite build && esbuild api/server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
-    "start": "PORT=3000 node dist/server.cjs",
-    "clean": "rm -rf dist",
-    "lint": "tsc --noEmit",
-    "test": "tsx api/tests/admin.test.ts && tsx api/tests/org.test.ts && tsx api/tests/config.test.ts && tsx api/tests/serviceRequest.test.ts && tsx api/tests/serviceJob.test.ts && tsx api/tests/dashboard.test.ts && tsx api/tests/amc.test.ts && tsx api/tests/report.test.ts && tsx api/tests/document.test.ts"
+    "dev": "PORT=3000 tsx avon-servicepro-api/src/server.ts",
+    "build": "vite build && npm --prefix ./avon-servicepro-api run build",
+    "start": "PORT=3000 node avon-servicepro-api/dist/server.js",
+    "clean": "rm -rf dist avon-servicepro-api/dist",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

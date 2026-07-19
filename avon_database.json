@@ -265,35 +265,35 @@
       "key": "system_name",
       "value": "AVON ServicePro Enterprise",
       "category": "General",
-      "updatedAt": "2026-07-19T11:02:04.644Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "ss2",
       "key": "contact_email",
       "value": "support@avon.lk",
       "category": "General",
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "ss3",
       "key": "maintenance_mode",
       "value": "false",
       "category": "Maintenance",
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "ss4",
       "key": "timezone",
       "value": "Asia/Colombo",
       "category": "General",
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "ss5",
       "key": "global_grace_period_days",
       "value": "14",
       "category": "Service",
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     }
   ],
   "configurations": [
@@ -304,7 +304,7 @@
       "type": "string",
       "description": "Outgoing SMTP server host",
       "isEncrypted": 0,
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "cfg2",
@@ -313,7 +313,7 @@
       "type": "number",
       "description": "SMTP SSL/TLS Port",
       "isEncrypted": 0,
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "cfg3",
@@ -322,7 +322,7 @@
       "type": "number",
       "description": "Maximum HTTP API request timeout in milliseconds",
       "isEncrypted": 0,
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "cfg4",
@@ -331,7 +331,7 @@
       "type": "string",
       "description": "Server logs verbose level",
       "isEncrypted": 0,
-      "updatedAt": "2026-07-19T11:02:04.645Z"
+      "updatedAt": "2026-07-17T16:12:26.180Z"
     }
   ],
   "version_control": [
@@ -342,7 +342,7 @@
       "releaseDate": "2026-06-01",
       "status": "ACTIVE",
       "changelog": "Initial stable enterprise release of AVON ServicePro.",
-      "createdAt": "2026-07-19T11:02:04.645Z"
+      "createdAt": "2026-07-17T16:12:26.180Z"
     },
     {
       "id": "v2",
@@ -351,7 +351,7 @@
       "releaseDate": "2026-07-15",
       "status": "ACTIVE",
       "changelog": "Added Organization Hierarchy Module and Department Structure management.",
-      "createdAt": "2026-07-19T11:02:04.645Z"
+      "createdAt": "2026-07-17T16:12:26.180Z"
     }
   ],
   "lookup_data": [
@@ -555,53 +555,13 @@
       "slaDueDate": "2026-07-19T11:30:00Z",
       "slaDaysSetting": 7,
       "slaStatus": "IN_COMPLIANCE"
-    },
-    {
-      "id": "sreq-9f5e8cfa",
-      "ticketNumber": "AVN-SRQ-583943",
-      "status": "CLOSED",
-      "slaDaysSetting": 3,
-      "slaStatus": "IN_COMPLIANCE",
-      "instrumentId": "inst-pcr-test",
-      "instrumentName": "Polymerase Chain Reaction Cycler",
-      "brand": "THERMO SCIENTIFIC",
-      "serialNumber": "SRQ-TEST-888",
-      "customerId": "cust-test-1",
-      "customerName": "Asiri Surgical Test Lab",
-      "subject": "Optics calibration drift detected",
-      "description": "The green laser fluorescence reading is showing a 15% drift off-calibration limits. System needs manual alignments.",
-      "priority": "HIGH",
-      "createdAt": "2026-07-19T14:24:58.204Z",
-      "updatedAt": "2026-07-19T14:24:58.208Z",
-      "resolvedAt": "2026-07-19T14:24:58.208Z",
-      "downTimeHours": 4,
-      "estimatedCost": 145000,
-      "billingApproved": 1
     }
   ],
   "installation_assignments": [],
   "installation_assignment_audit_logs": [],
   "installations": [],
-  "service_request_assignments": [
-    {
-      "id": "sra-7403e715",
-      "requestId": "sreq-9f5e8cfa",
-      "assignedEngineerId": "usr-eng-alice",
-      "assignedEngineerName": "Alice Devine",
-      "targetResolutionDate": "2026-07-21",
-      "remarks": "Alice is lead optics specialist, assigning her to handle drift.",
-      "createdAt": "2026-07-19T14:24:58.206Z"
-    }
-  ],
-  "service_request_audit_logs": [
-    {
-      "id": "aud-82c1ebf5",
-      "requestId": "sreq-9f5e8cfa",
-      "action": "ASSIGNED",
-      "remarks": "Alice is lead optics specialist, assigning her to handle drift.",
-      "createdAt": "2026-07-19T14:24:58.207Z"
-    }
-  ],
+  "service_request_assignments": [],
+  "service_request_audit_logs": [],
   "audit_logs": [
     {
       "id": "aud-init-1",
@@ -643,123 +603,9 @@
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
   ],
-  "service_jobs": [
-    {
-      "id": "job-28330bf1",
-      "serialNumber": "SRQ-TEST-888",
-      "jobType": "Calibration",
-      "status": "CLOSED",
-      "customerName": "Asiri Surgical Test Lab",
-      "brand": "THERMO SCIENTIFIC",
-      "model": "Polymerase Chain Reaction Cycler",
-      "priority": "Urgent",
-      "createdAt": "2026-07-19T14:24:58.205Z",
-      "assignedEngineerId": "usr-eng-alice",
-      "assignedEngineerName": "Alice Devine"
-    },
-    {
-      "id": "job-13f1c0aa",
-      "jobType": "Calibration",
-      "status": "Completed",
-      "priority": "Routine",
-      "customerName": "Lanka Hospitals Lab",
-      "brand": "SHIMADZU",
-      "model": "Prominence LC-2030",
-      "serialNumber": "JOB-TEST-999",
-      "createdById": "usr-admin-1",
-      "createdByRole": "Admin",
-      "createdAt": "2026-07-19T14:24:59.001Z",
-      "assignedEngineerId": "usr-eng-bob",
-      "assignedEngineerName": "Bob Builder",
-      "calibrationData": "{\"measurements\":{\"voltageLine\":\"230V\",\"temperatureAccuracy\":\"99.8%\",\"pressureOffset\":\"0.02 Bar\"},\"calibrationDate\":\"2026-07-16\",\"certificateNumber\":\"CAL-CERT-999-BOB\",\"invoiceAmount\":18500,\"reportType\":\"Calibration Certificate\"}"
-    },
-    {
-      "id": "job-76511284",
-      "jobType": "Workshop Job",
-      "status": "Closed",
-      "priority": "Urgent",
-      "customerName": "General Hospital Kandy",
-      "brand": "SYSMEX",
-      "model": "XN-1000 Hematology Analyzer",
-      "serialNumber": "WS-TEST-888",
-      "createdById": "usr-admin-1",
-      "createdByRole": "Admin",
-      "createdAt": "2026-07-19T14:24:59.006Z",
-      "assignedEngineerId": "usr-eng-bob",
-      "assignedEngineerName": "Bob Builder",
-      "calibrationData": "{\"measurements\":{\"laserIntensity\":\"11.5 mW\",\"inputVoltage\":\"230V AC\",\"chamberPressure\":\"0.05 mbar\"},\"acceptanceDate\":\"2026-07-19T14:24:59.007Z\",\"itemSerialNumber\":\"WS-TEST-888\",\"institute\":\"General Hospital Kandy\",\"departmentSection\":\"Workshop Bench #4\",\"contactName\":\"Dr. Samantha\",\"contactNumber\":\"0771234567\",\"warrantyStatus\":\"Non-Warranty\",\"partsReceivedWithItem\":\"Main Unit, Cables\",\"takenByDeliveryPerson\":\"Courier services\",\"repairSteps\":[\"Resoldered laser power IC block\",\"Calibrated sensor gain offset\"],\"testResult\":\"Pass\",\"testHours\":4,\"reportType\":\"Workshop Repair Report\"}"
-    }
-  ],
-  "kpi_master": [
-    {
-      "id": "kpi-a8f68b0e",
-      "name": "Service SLA Compliance",
-      "description": "Optics and service completion SLA compliance rates",
-      "weight": 50,
-      "targetValue": "95%",
-      "roleType": "Engineer"
-    },
-    {
-      "id": "kpi-f024bc43",
-      "name": "Customer Satisfaction Index",
-      "description": "Feedback and Net Promoter Scores from clients",
-      "weight": 50,
-      "targetValue": "9.0/10",
-      "roleType": "Engineer"
-    },
-    {
-      "id": "kpi-0f0fe142",
-      "name": "Service SLA Compliance",
-      "description": "Optics and service completion SLA compliance rates",
-      "weight": 50,
-      "targetValue": "95%",
-      "roleType": "Engineer"
-    },
-    {
-      "id": "kpi-5eb6618f",
-      "name": "Customer Satisfaction Index",
-      "description": "Feedback and Net Promoter Scores from clients",
-      "weight": 50,
-      "targetValue": "9.0/10",
-      "roleType": "Engineer"
-    },
-    {
-      "id": "kpi-a4dae700",
-      "name": "Service SLA Compliance",
-      "description": "Optics and service completion SLA compliance rates",
-      "weight": 50,
-      "targetValue": "95%",
-      "roleType": "Engineer"
-    },
-    {
-      "id": "kpi-ba27ffaa",
-      "name": "Customer Satisfaction Index",
-      "description": "Feedback and Net Promoter Scores from clients",
-      "weight": 50,
-      "targetValue": "9.0/10",
-      "roleType": "Engineer"
-    }
-  ],
-  "employee_kpi_assignments": [
-    {
-      "id": "eka-c6af79cd",
-      "employeeId": "usr-eng-bob",
-      "kpiId": "kpi-a4dae700",
-      "financialYearId": "FY2026",
-      "currentValue": "0% SLA Met",
-      "score": 0,
-      "errorsCount": 0
-    },
-    {
-      "id": "eka-e046f856",
-      "employeeId": "usr-eng-bob",
-      "kpiId": "kpi-ba27ffaa",
-      "financialYearId": "FY2026",
-      "currentValue": "No client reviews yet",
-      "score": 0,
-      "errorsCount": 0
-    }
-  ],
+  "service_jobs": [],
+  "kpi_master": [],
+  "employee_kpi_assignments": [],
   "kpi_measurements": [],
   "amc_contracts": [],
   "amc_renewals": [],
@@ -802,7 +648,7 @@
       "tags": "[]",
       "avatarUrl": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120",
       "territory": "Colombo Headquarters",
-      "passwordHash": "$2b$10$qliqm93l/zVaESyqkFYSKO6hcjj9qcUSyqkoBi880OY295PcQ06iO"
+      "passwordHash": "$2b$10$RoILawdKkpkCZO9IwvbI2uxTI8M1ZzV3s3cdTYFlwEkTb/5YOH8hi"
     },
     {
       "id": "usr_admin",
@@ -812,7 +658,7 @@
       "tags": "[]",
       "avatarUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120",
       "territory": "Colombo Head Office",
-      "passwordHash": "$2b$10$qliqm93l/zVaESyqkFYSKOQJ.TDJkAzBgVOMx00uo.Qbmdobr1F2a"
+      "passwordHash": "$2b$10$RoILawdKkpkCZO9IwvbI2ujjMrTBnyvgK16NRs8PKkqchmTsPrwQS"
     },
     {
       "id": "usr_cherub",
@@ -822,7 +668,7 @@
       "tags": "[\"Workshop Engineer\", \"Calibration Engineer\"]",
       "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
       "territory": "Colombo Head Office",
-      "passwordHash": "$2b$10$qliqm93l/zVaESyqkFYSKORUvtMWa/m/fFjATjKgohsqjHEy51eMO"
+      "passwordHash": "$2b$10$ylhqAQQFi1su5B8A5elNXuEigbv.Ntk3r48ScMmu41aS.Jnnf77n."
     }
   ]
 }

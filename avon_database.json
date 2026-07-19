@@ -1,0 +1,1349 @@
+{
+  "documents": [
+    {
+      "id": "62caf121-1916-4627-9468-4a197f523ef5",
+      "name": "Calibration Report 2026",
+      "description": "Annual Metrology and calibration results",
+      "category": "CALIBRATION",
+      "associatedId": "job-123",
+      "ownerId": "usr-123",
+      "securityLevel": "STANDARD",
+      "status": "ACTIVE",
+      "createdAt": "2026-07-19T06:36:46.310Z",
+      "updatedAt": "2026-07-19T06:36:46.314Z"
+    },
+    {
+      "id": "db312124-e145-402e-bb67-109524539d8b",
+      "name": "Internal Wiring Schematic",
+      "description": "",
+      "category": "GENERAL",
+      "ownerId": "usr-admin",
+      "securityLevel": "INTERNAL_ONLY",
+      "status": "ACTIVE",
+      "createdAt": "2026-07-19T06:36:46.316Z",
+      "updatedAt": "2026-07-19T06:36:46.316Z"
+    }
+  ],
+  "document_versions": [
+    {
+      "id": "8dd9962a-71d5-4641-ab27-79bba31684e6",
+      "documentId": "62caf121-1916-4627-9468-4a197f523ef5",
+      "versionNumber": 1,
+      "originalName": "cal_report_2026.pdf",
+      "fileSize": 10240,
+      "mimeType": "application/pdf",
+      "fileContent": "SGVsbG8gV29ybGQgZnJvbSBBVk9OIFNlcnZpY2VQcm8=",
+      "uploadedBy": "John Doe",
+      "uploadedAt": "2026-07-19T06:36:46.310Z",
+      "changeSummary": "Initial calibration verification"
+    },
+    {
+      "id": "954f7eec-439a-47e0-b494-165e28f8d74d",
+      "documentId": "62caf121-1916-4627-9468-4a197f523ef5",
+      "versionNumber": 2,
+      "originalName": "cal_report_2026_rev1.pdf",
+      "fileSize": 12000,
+      "mimeType": "application/pdf",
+      "fileContent": "SGVsbG8gV29ybGQgZnJvbSBBVk9OIFNlcnZpY2VQcm8gUmV2IDE=",
+      "uploadedBy": "Jane Admin",
+      "uploadedAt": "2026-07-19T06:36:46.314Z",
+      "changeSummary": "Corrected high-pressure threshold bounds"
+    },
+    {
+      "id": "c1ecef84-c0de-496a-9d1f-3c023e861116",
+      "documentId": "db312124-e145-402e-bb67-109524539d8b",
+      "versionNumber": 1,
+      "originalName": "wiring_v1.png",
+      "fileSize": 2048,
+      "mimeType": "image/png",
+      "fileContent": "YmFzZTY0cG5n",
+      "uploadedBy": "System Administrator",
+      "uploadedAt": "2026-07-19T06:36:46.316Z",
+      "changeSummary": "Initial Upload"
+    }
+  ],
+  "notifications": [],
+  "refresh_tokens": [],
+  "rbac_permissions": [
+    {
+      "id": "p1",
+      "code": "jobs:create",
+      "description": "Create service jobs"
+    },
+    {
+      "id": "p2",
+      "code": "jobs:read",
+      "description": "Read service jobs"
+    },
+    {
+      "id": "p3",
+      "code": "jobs:update",
+      "description": "Update service jobs"
+    },
+    {
+      "id": "p4",
+      "code": "jobs:delete",
+      "description": "Delete service jobs"
+    },
+    {
+      "id": "p5",
+      "code": "users:create",
+      "description": "Create users"
+    },
+    {
+      "id": "p6",
+      "code": "users:read",
+      "description": "Read users"
+    },
+    {
+      "id": "p7",
+      "code": "users:update",
+      "description": "Update users"
+    },
+    {
+      "id": "p8",
+      "code": "users:delete",
+      "description": "Delete users"
+    },
+    {
+      "id": "p9",
+      "code": "assets:create",
+      "description": "Create assets"
+    },
+    {
+      "id": "p10",
+      "code": "assets:read",
+      "description": "Read assets"
+    },
+    {
+      "id": "p11",
+      "code": "assets:update",
+      "description": "Update assets"
+    },
+    {
+      "id": "p12",
+      "code": "assets:delete",
+      "description": "Delete assets"
+    },
+    {
+      "id": "p13",
+      "code": "customers:create",
+      "description": "Create customers"
+    },
+    {
+      "id": "p14",
+      "code": "customers:read",
+      "description": "Read customers"
+    },
+    {
+      "id": "p15",
+      "code": "customers:update",
+      "description": "Update customers"
+    },
+    {
+      "id": "p16",
+      "code": "customers:delete",
+      "description": "Delete customers"
+    }
+  ],
+  "rbac_role_permissions": [
+    {
+      "roleName": "Admin",
+      "permissionId": "p1"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p1"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p2"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p2"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p3"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p3"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p4"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p4"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p5"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p5"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p6"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p6"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p7"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p7"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p8"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p8"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p9"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p9"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p10"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p10"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p11"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p11"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p12"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p12"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p13"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p13"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p14"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p14"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p15"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p15"
+    },
+    {
+      "roleName": "Admin",
+      "permissionId": "p16"
+    },
+    {
+      "roleName": "System Admin",
+      "permissionId": "p16"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p1"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p2"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p3"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p10"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p13"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p14"
+    },
+    {
+      "roleName": "Dispatcher",
+      "permissionId": "p15"
+    },
+    {
+      "roleName": "Technician",
+      "permissionId": "p2"
+    },
+    {
+      "roleName": "Technician",
+      "permissionId": "p3"
+    },
+    {
+      "roleName": "Technician",
+      "permissionId": "p10"
+    },
+    {
+      "roleName": "Technician",
+      "permissionId": "p14"
+    }
+  ],
+  "system_settings": [
+    {
+      "id": "ss1",
+      "key": "system_name",
+      "value": "AVON ServicePro Enterprise",
+      "category": "General",
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "ss2",
+      "key": "contact_email",
+      "value": "support@avon.lk",
+      "category": "General",
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "ss3",
+      "key": "maintenance_mode",
+      "value": "false",
+      "category": "Maintenance",
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "ss4",
+      "key": "timezone",
+      "value": "Asia/Colombo",
+      "category": "General",
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "ss5",
+      "key": "global_grace_period_days",
+      "value": "14",
+      "category": "Service",
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    }
+  ],
+  "configurations": [
+    {
+      "id": "cfg1",
+      "key": "smtp_host",
+      "value": "mail.avon.lk",
+      "type": "string",
+      "description": "Outgoing SMTP server host",
+      "isEncrypted": 0,
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "cfg2",
+      "key": "smtp_port",
+      "value": "587",
+      "type": "number",
+      "description": "SMTP SSL/TLS Port",
+      "isEncrypted": 0,
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "cfg3",
+      "key": "api_timeout_ms",
+      "value": "30000",
+      "type": "number",
+      "description": "Maximum HTTP API request timeout in milliseconds",
+      "isEncrypted": 0,
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "cfg4",
+      "key": "log_level",
+      "value": "info",
+      "type": "string",
+      "description": "Server logs verbose level",
+      "isEncrypted": 0,
+      "updatedAt": "2026-07-19T06:36:41.523Z"
+    }
+  ],
+  "version_control": [
+    {
+      "id": "v1",
+      "appVersion": "1.0.0",
+      "apiVersion": "v1",
+      "releaseDate": "2026-06-01",
+      "status": "ACTIVE",
+      "changelog": "Initial stable enterprise release of AVON ServicePro.",
+      "createdAt": "2026-07-19T06:36:41.523Z"
+    },
+    {
+      "id": "v2",
+      "appVersion": "1.1.0",
+      "apiVersion": "v1",
+      "releaseDate": "2026-07-15",
+      "status": "ACTIVE",
+      "changelog": "Added Organization Hierarchy Module and Department Structure management.",
+      "createdAt": "2026-07-19T06:36:41.523Z"
+    }
+  ],
+  "lookup_data": [
+    {
+      "id": "l1",
+      "type": "job_type",
+      "code": "INSTALLATION",
+      "value": "Installation",
+      "sortOrder": 1,
+      "isActive": 1
+    },
+    {
+      "id": "l2",
+      "type": "job_type",
+      "code": "PREVENTIVE_MAINTENANCE",
+      "value": "Preventive Maintenance",
+      "sortOrder": 2,
+      "isActive": 1
+    },
+    {
+      "id": "l3",
+      "type": "job_type",
+      "code": "CORRECTIVE_REPAIR",
+      "value": "Corrective Repair",
+      "sortOrder": 3,
+      "isActive": 1
+    },
+    {
+      "id": "l4",
+      "type": "job_type",
+      "code": "CALIBRATION",
+      "value": "Calibration",
+      "sortOrder": 4,
+      "isActive": 1
+    },
+    {
+      "id": "l5",
+      "type": "priority",
+      "code": "LOW",
+      "value": "Low",
+      "sortOrder": 1,
+      "isActive": 1
+    },
+    {
+      "id": "l6",
+      "type": "priority",
+      "code": "MEDIUM",
+      "value": "Medium",
+      "sortOrder": 2,
+      "isActive": 1
+    },
+    {
+      "id": "l7",
+      "type": "priority",
+      "code": "HIGH",
+      "value": "High",
+      "sortOrder": 3,
+      "isActive": 1
+    },
+    {
+      "id": "l8",
+      "type": "priority",
+      "code": "EMERGENCY",
+      "value": "Emergency / Critical",
+      "sortOrder": 4,
+      "isActive": 1
+    },
+    {
+      "id": "l9",
+      "type": "repair_status",
+      "code": "PENDING",
+      "value": "Pending Assignment",
+      "sortOrder": 1,
+      "isActive": 1
+    },
+    {
+      "id": "l10",
+      "type": "repair_status",
+      "code": "ASSIGNED",
+      "value": "Assigned / In-Progress",
+      "sortOrder": 2,
+      "isActive": 1
+    },
+    {
+      "id": "l11",
+      "type": "repair_status",
+      "code": "WORKSHOP_REPAIR",
+      "value": "Transferred to Workshop",
+      "sortOrder": 3,
+      "isActive": 1
+    },
+    {
+      "id": "l12",
+      "type": "repair_status",
+      "code": "COMPLETED",
+      "value": "Completed",
+      "sortOrder": 4,
+      "isActive": 1
+    },
+    {
+      "id": "l13",
+      "type": "repair_status",
+      "code": "CLOSED",
+      "value": "Closed",
+      "sortOrder": 5,
+      "isActive": 1
+    }
+  ],
+  "installation_requests": [
+    {
+      "id": "ireq-1",
+      "invoiceNumber": "INV-2026-8801",
+      "invoiceValue": 4500000,
+      "customerName": "Asiri Surgical Hospital",
+      "departmentName": "Molecular Diagnostics Lab",
+      "endUserName": "Dr. Chandika Perera (Head of Molecular)",
+      "instrumentName": "Real-Time PCR Thermal Cycler",
+      "brand": "THERMO SCIENTIFIC",
+      "model": "QuantStudio 5",
+      "serialNumber": "QS5-994120-LK",
+      "deliveryDate": "2026-06-20",
+      "warrantyPeriod": 24,
+      "warrantyUnit": "Months",
+      "remarks": "Requires dedicated UPS power line verification before engineer unboxing.",
+      "status": "Pending Assignment",
+      "createdAt": "2026-06-20T08:30:00Z",
+      "updatedAt": "2026-06-20T08:30:00Z"
+    },
+    {
+      "id": "ireq-2",
+      "invoiceNumber": "INV-2026-8842",
+      "invoiceValue": 12800000,
+      "customerName": "Lanka Hospitals Diagnostics",
+      "departmentName": "Clinical Biochemistry",
+      "endUserName": "Mr. Nalin Silva (Chief Lab Technologist)",
+      "instrumentName": "Automated Chemistry Analyzer",
+      "brand": "AGILENT",
+      "model": "Cary 3500 UV-Vis",
+      "serialNumber": "AGL-3500-8812",
+      "deliveryDate": "2026-06-22",
+      "warrantyPeriod": 36,
+      "warrantyUnit": "Months",
+      "remarks": "Customer requested installation during evening shift (after 4 PM).",
+      "status": "Pending Assignment",
+      "createdAt": "2026-06-22T10:15:00Z",
+      "updatedAt": "2026-06-22T10:15:00Z"
+    },
+    {
+      "id": "ireq-3",
+      "invoiceNumber": "INV-2026-8711",
+      "invoiceValue": 8900000,
+      "customerName": "Durdans Hospital",
+      "departmentName": "Hematology & Coagulation",
+      "endUserName": "Dr. Nilmini Weerasinghe",
+      "instrumentName": "High-Performance Liquid Chromatograph",
+      "brand": "SHIMADZU",
+      "model": "Prominence-i LC-2030C",
+      "serialNumber": "SHM-2030C-4419",
+      "deliveryDate": "2026-06-15",
+      "warrantyPeriod": 12,
+      "warrantyUnit": "Months",
+      "remarks": "Pre-site inspection completed. Argon gas cylinders ready.",
+      "status": "Assigned",
+      "createdAt": "2026-06-15T11:40:00Z",
+      "updatedAt": "2026-06-15T11:40:00Z"
+    }
+  ],
+  "service_requests": [
+    {
+      "id": "sreq-1",
+      "ticketNumber": "AVN-RPR-2026-101",
+      "instrumentId": "inst-pcr-1",
+      "instrumentName": "Real-Time PCR Thermal Cycler",
+      "serialNumber": "QS5-994120-LK",
+      "customerId": "cust-1",
+      "customerName": "Asiri Surgical Hospital",
+      "subject": "Optical sensor calibration error on startup",
+      "description": "The instrument displays error code ERR-OPT-402 during initial optical diagnostic self-test. High noise floor detected.",
+      "priority": "HIGH",
+      "status": "RECEIVED",
+      "createdAt": "2026-07-10T09:00:00Z",
+      "updatedAt": "2026-07-10T09:00:00Z",
+      "slaDueDate": "2026-07-13T09:00:00Z",
+      "slaDaysSetting": 3,
+      "slaStatus": "IN_COMPLIANCE"
+    },
+    {
+      "id": "sreq-2",
+      "ticketNumber": "AVN-CAL-2026-202",
+      "instrumentId": "inst-chem-1",
+      "instrumentName": "Automated Chemistry Analyzer",
+      "serialNumber": "AGL-3500-8812",
+      "customerId": "cust-2",
+      "customerName": "Lanka Hospitals Diagnostics",
+      "subject": "Routine Metrology Calibration requested",
+      "description": "Annual ISO 17025 certified calibration is due for the UV-Vis optics path and temperature block.",
+      "priority": "MEDIUM",
+      "status": "RECEIVED",
+      "createdAt": "2026-07-12T11:30:00Z",
+      "updatedAt": "2026-07-12T11:30:00Z",
+      "slaDueDate": "2026-07-19T11:30:00Z",
+      "slaDaysSetting": 7,
+      "slaStatus": "IN_COMPLIANCE"
+    },
+    {
+      "id": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "ticketNumber": "AVN-SRQ-2026-8365",
+      "instrumentId": "inst-pcr-test",
+      "instrumentName": "Polymerase Chain Reaction Cycler",
+      "brand": "THERMO SCIENTIFIC",
+      "serialNumber": "SRQ-TEST-888",
+      "customerId": "cust-test-1",
+      "customerName": "Asiri Surgical Test Lab",
+      "subject": "Optics calibration drift detected",
+      "description": "The green laser fluorescence reading is showing a 15% drift off-calibration limits. System needs manual alignments.",
+      "priority": "HIGH",
+      "status": "CLOSED",
+      "createdAt": "2026-07-19T06:36:41.832Z",
+      "updatedAt": "2026-07-19T06:36:41.843Z",
+      "resolvedAt": "2026-07-19T06:36:41.840Z",
+      "downTimeHours": 0,
+      "estimatedCost": 145000,
+      "billingApproved": 1,
+      "slaDueDate": "2026-07-22T06:36:41.832Z",
+      "slaDaysSetting": 3,
+      "slaStatus": "IN_COMPLIANCE"
+    }
+  ],
+  "installation_assignments": [],
+  "installation_assignment_audit_logs": [],
+  "installations": [],
+  "service_request_assignments": [
+    {
+      "id": "7bd5c1cf-1ccf-4537-a6dc-e0f9f0d1f258",
+      "requestId": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "assignedEngineerId": "usr-eng-alice",
+      "assignedEngineerName": "Alice Devine",
+      "assignedBy": "Test Administrator",
+      "assignmentDate": "2026-07-19",
+      "targetResolutionDate": "2026-07-21",
+      "remarks": "Alice is lead optics specialist, assigning her to handle drift.",
+      "createdAt": "2026-07-19T06:36:41.838Z",
+      "updatedAt": "2026-07-19T06:36:41.838Z"
+    }
+  ],
+  "service_request_audit_logs": [
+    {
+      "id": "3c21db02-a319-4537-9042-42b975f452c9",
+      "requestId": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "action": "ASSIGN_ENGINEER",
+      "fromStatus": "RECEIVED",
+      "toStatus": "DIAGNOSING",
+      "performedBy": "Test Administrator",
+      "performedByRole": "Admin",
+      "notes": "Assigned engineer Alice Devine. Target resolution: 2026-07-21",
+      "timestamp": "2026-07-19T06:36:41.838Z"
+    },
+    {
+      "id": "affe69b6-8809-418d-b5ad-e8af015f059e",
+      "requestId": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "action": "STATUS_TRANSITION",
+      "fromStatus": "DIAGNOSING",
+      "toStatus": "CLOSED",
+      "performedBy": "Test Administrator",
+      "performedByRole": "Admin",
+      "notes": "Laser focal point realigned and optical block recalibrated to within +/- 1% tolerances.",
+      "timestamp": "2026-07-19T06:36:41.841Z"
+    },
+    {
+      "id": "367aa4b3-fdea-4203-a59c-1476a6a26a2b",
+      "requestId": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "action": "BILLING_UPDATE",
+      "fromStatus": "CLOSED",
+      "toStatus": "CLOSED",
+      "performedBy": "Test Administrator",
+      "performedByRole": "Admin",
+      "notes": "Cost updated to LKR 145000. Approval status: APPROVED",
+      "timestamp": "2026-07-19T06:36:41.843Z"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "aud-init-1",
+      "timestamp": "2026-07-15T09:30:00Z",
+      "userId": "usr-admin-1",
+      "userName": "Dr. John Doe",
+      "userRole": "Admin",
+      "action": "USER_LOGIN",
+      "previousValue": "",
+      "newValue": "",
+      "remarks": "User successfully authenticated via SSO",
+      "ipAddress": "192.168.1.50",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "aud-init-2",
+      "timestamp": "2026-07-15T10:15:00Z",
+      "userId": "usr-eng-bob",
+      "userName": "Bob Builder",
+      "userRole": "Technician",
+      "action": "UPDATE_JOB",
+      "previousValue": "{\"status\": \"ASSIGNED\"}",
+      "newValue": "{\"status\": \"WORKSHOP_REPAIR\"}",
+      "remarks": "Transferred instrument Cary 3500 to Workshop due to intensive optical sensor misalignment",
+      "ipAddress": "192.168.1.112",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "id": "aud-init-3",
+      "timestamp": "2026-07-15T11:00:00Z",
+      "userId": "usr-admin-1",
+      "userName": "Dr. John Doe",
+      "userRole": "Admin",
+      "action": "CONFIG_CHANGE",
+      "previousValue": "{\"global_grace_period_days\": \"10\"}",
+      "newValue": "{\"global_grace_period_days\": \"14\"}",
+      "remarks": "Adjusted global grace period for preventive maintenance to account for public holidays",
+      "ipAddress": "192.168.1.50",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "103b724e-335f-4dc6-9549-4327944dba34",
+      "timestamp": "2026-07-19T06:36:41.832Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "CREATE_SERVICE_REQUEST",
+      "newValue": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "remarks": "Logged service ticket AVN-SRQ-2026-8365 for customer Asiri Surgical Test Lab, serial SRQ-TEST-888",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "33287bd1-0bf2-463a-8b26-def7d08a22d3",
+      "timestamp": "2026-07-19T06:36:41.837Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "ASSIGN_SERVICE_REQUEST",
+      "newValue": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "remarks": "Assigned service ticket AVN-SRQ-2026-8365 to Alice Devine",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "f6191019-dc83-42d4-acef-f59eded04724",
+      "timestamp": "2026-07-19T06:36:41.840Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "TRANSITION_SERVICE_STATUS",
+      "newValue": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "remarks": "Updated service ticket AVN-SRQ-2026-8365 status from DIAGNOSING to CLOSED",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "13386c4e-373e-40b2-ab5e-cdddbd310bb8",
+      "timestamp": "2026-07-19T06:36:41.843Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "UPDATE_SERVICE_BILLING",
+      "newValue": "e4073ddb-39db-4061-b7bb-870ed22ec691",
+      "remarks": "Updated cost of ticket AVN-SRQ-2026-8365 to 145000 LKR (Approval: true)",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "bd9a0ac7-7506-4490-adfd-a82e97459f15",
+      "timestamp": "2026-07-19T06:36:42.654Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "CREATE_JOB",
+      "newValue": "bf8cdc69-4263-4725-96aa-95aa39eb77ac",
+      "remarks": "Created ticket of type Calibration with initial status Pending Assignment",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "36eaa13d-4c55-4411-9ba3-eacec4ba83ad",
+      "timestamp": "2026-07-19T06:36:42.657Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "ASSIGN_ENGINEER_JOB",
+      "previousValue": "usr-eng-bob",
+      "newValue": "usr-eng-bob",
+      "remarks": "Assigned job bf8cdc69-4263-4725-96aa-95aa39eb77ac to engineer Bob Builder. Notes: Bob has been assigned to do the annual calibration.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "ebffd8b4-fe21-49ed-b815-dcc7f3529375",
+      "timestamp": "2026-07-19T06:36:42.665Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "LOG_JOB_MEASUREMENTS",
+      "previousValue": "Tested",
+      "newValue": "Tested",
+      "remarks": "Recorded diagnostic measurements for job bf8cdc69-4263-4725-96aa-95aa39eb77ac. Status updated to Tested.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "3a1d5c5d-cfb7-4f46-a7e2-08a2054e2bf4",
+      "timestamp": "2026-07-19T06:36:42.671Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "LOG_JOB_REPORT",
+      "previousValue": "Completed",
+      "newValue": "Completed",
+      "remarks": "Logged report of type Calibration Certificate for job bf8cdc69-4263-4725-96aa-95aa39eb77ac. Status updated to Completed.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "96733d20-3937-490a-a2f3-0eb6ac2121fe",
+      "timestamp": "2026-07-19T06:36:42.685Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "CREATE_JOB",
+      "newValue": "b83cc161-6eea-420f-910f-b60f35cbf4b6",
+      "remarks": "Created ticket of type Workshop Job with initial status Pending Assignment",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "b5f8eba2-9ce2-44e8-9ce0-8131ebf48b43",
+      "timestamp": "2026-07-19T06:36:42.687Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "ASSIGN_ENGINEER_JOB",
+      "previousValue": "usr-eng-bob",
+      "newValue": "usr-eng-bob",
+      "remarks": "Assigned job b83cc161-6eea-420f-910f-b60f35cbf4b6 to engineer Bob Builder. Notes: Bob builder assigned to workshop micro-soldering station #4",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "47449c32-6c9f-4449-b540-4b144174b7bc",
+      "timestamp": "2026-07-19T06:36:42.692Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "LOG_JOB_MEASUREMENTS",
+      "previousValue": "Repair Completed",
+      "newValue": "Repair Completed",
+      "remarks": "Recorded diagnostic measurements for job b83cc161-6eea-420f-910f-b60f35cbf4b6. Status updated to Repair Completed.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "3bf3808c-f67e-4cdd-84fa-080cfa92a524",
+      "timestamp": "2026-07-19T06:36:42.700Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "LOG_JOB_REPORT",
+      "previousValue": "Completed",
+      "newValue": "Completed",
+      "remarks": "Logged report of type Workshop Repair Report for job b83cc161-6eea-420f-910f-b60f35cbf4b6. Status updated to Completed.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "d5f1a5e1-aafd-43cc-8073-483127b0891a",
+      "timestamp": "2026-07-19T06:36:42.706Z",
+      "userId": "usr-admin-1",
+      "userName": "Test Administrator",
+      "userRole": "Admin",
+      "action": "UPDATE_JOB_WORKFLOW",
+      "previousValue": "Closed",
+      "newValue": "Closed",
+      "remarks": "Updated job b83cc161-6eea-420f-910f-b60f35cbf4b6 to status Closed. Notes: Item officially dispatched with release note AVN-DISP-88899.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "d56b2b0d-f20d-4124-9ed5-0c2b60ee07b0",
+      "timestamp": "2026-07-19T06:36:44.507Z",
+      "userId": "usr-admin-1",
+      "userName": "Admin User",
+      "userRole": "Admin",
+      "action": "CREATE_AMC_CONTRACT",
+      "newValue": "AMC/TEST/2026/001",
+      "remarks": "Registered new AMC Contract AMC/TEST/2026/001 for customer Asiri Surgical Hospital. SLA Tier: Gold.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "b00a6880-d337-457f-b184-1df2c77b75af",
+      "timestamp": "2026-07-19T06:36:44.514Z",
+      "userId": "usr-admin-1",
+      "userName": "Admin User",
+      "userRole": "Admin",
+      "action": "EDIT_AMC_CONTRACT",
+      "previousValue": "AMC/TEST/2026/001",
+      "newValue": "AMC/TEST/2026/001",
+      "remarks": "Updated AMC Contract AMC/TEST/2026/001. SLA Tier: Platinum.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "26158df7-558e-4b1d-aa0d-72fa0bcaf3e7",
+      "timestamp": "2026-07-19T06:36:44.541Z",
+      "userId": "usr-admin-1",
+      "userName": "Admin User",
+      "userRole": "Admin",
+      "action": "RENEW_AMC_CONTRACT",
+      "previousValue": "AMC/TEST/2026/001",
+      "newValue": "AMC/TEST/2026/001",
+      "remarks": "Renewed AMC Contract AMC/TEST/2026/001 with 12% escalation. New price: LKR 392,000",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    },
+    {
+      "id": "77d483ef-c536-4722-8fb1-5a56e4319068",
+      "timestamp": "2026-07-19T06:36:44.543Z",
+      "userId": "usr-admin-1",
+      "userName": "Admin User",
+      "userRole": "Admin",
+      "action": "DELETE_AMC_CONTRACT",
+      "previousValue": "AMC/TEST/2026/001",
+      "remarks": "Removed / Terminated AMC Contract AMC/TEST/2026/001 from active registry.",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "System / Direct"
+    }
+  ],
+  "service_jobs": [
+    {
+      "id": "5ec6b19f-d485-481f-adc0-c581b64d7e29",
+      "jobType": "Calibration",
+      "status": "CLOSED",
+      "priority": "Urgent",
+      "customerName": "Asiri Surgical Test Lab",
+      "brand": "THERMO SCIENTIFIC",
+      "model": "Polymerase Chain Reaction Cycler",
+      "serialNumber": "SRQ-TEST-888",
+      "assignedEngineerId": "usr-eng-alice",
+      "assignedEngineerName": "Alice Devine",
+      "createdById": "usr-admin-1",
+      "createdByRole": "Admin",
+      "createdAt": "2026-07-19T06:36:41.832Z",
+      "updatedAt": "2026-07-19T06:36:41.843Z",
+      "timeline": "[{\"status\":\"RECEIVED\",\"updatedAt\":\"2026-07-19T06:36:41.832Z\",\"updatedBy\":\"Test Administrator\",\"remarks\":\"Service request created and logged into enterprise system.\"},{\"status\":\"DIAGNOSING\",\"updatedAt\":\"2026-07-19T06:36:41.837Z\",\"updatedBy\":\"Test Administrator\",\"remarks\":\"Lead Engineer assigned: Alice Devine. Diagnostic checks initiated.\"},{\"status\":\"CLOSED\",\"updatedAt\":\"2026-07-19T06:36:41.840Z\",\"updatedBy\":\"Test Administrator\",\"remarks\":\"Laser focal point realigned and optical block recalibrated to within +/- 1% tolerances.\"},{\"status\":\"CLOSED\",\"updatedAt\":\"2026-07-19T06:36:41.843Z\",\"updatedBy\":\"Test Administrator\",\"remarks\":\"Updated estimated costs to LKR 145000. Billing APPROVED.\"}]"
+    },
+    {
+      "id": "bf8cdc69-4263-4725-96aa-95aa39eb77ac",
+      "jobType": "Calibration",
+      "status": "Completed",
+      "priority": "Routine",
+      "customerName": "Lanka Hospitals Lab",
+      "brand": "SHIMADZU",
+      "model": "Prominence LC-2030",
+      "serialNumber": "JOB-TEST-999",
+      "assignedEngineerId": "usr-eng-bob",
+      "assignedEngineerName": "Bob Builder",
+      "createdById": "usr-admin-1",
+      "createdByRole": "Admin",
+      "createdAt": "2026-07-19T06:36:42.654Z",
+      "updatedAt": "2026-07-19T06:36:42.671Z",
+      "timeline": "[{\"status\":\"Completed\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.671Z\",\"remarks\":\"Technical report logged: Calibration Certificate.\"},{\"status\":\"Tested\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.665Z\",\"remarks\":\"Technical calibration/diagnostic measurements successfully recorded.\"},{\"status\":\"Assigned\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.657Z\",\"remarks\":\"Bob has been assigned to do the annual calibration.\"},{\"status\":\"Pending Assignment\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.654Z\",\"remarks\":\"Service Request Ticket Initiated in Workspace Registry.\"}]",
+      "calibrationData": "{\"measurements\":{\"voltageLine\":\"230V\",\"temperatureAccuracy\":\"99.8%\",\"pressureOffset\":\"0.02 Bar\"},\"calibrationDate\":\"2026-07-16\",\"certificateNumber\":\"CAL-CERT-999-BOB\",\"invoiceAmount\":18500}"
+    },
+    {
+      "id": "b83cc161-6eea-420f-910f-b60f35cbf4b6",
+      "jobType": "Workshop Job",
+      "status": "Closed",
+      "priority": "Urgent",
+      "customerName": "General Hospital Kandy",
+      "brand": "SYSMEX",
+      "model": "XN-1000 Hematology Analyzer",
+      "serialNumber": "WS-TEST-888",
+      "assignedEngineerId": "usr-eng-bob",
+      "assignedEngineerName": "Bob Builder",
+      "createdById": "usr-admin-1",
+      "createdByRole": "Admin",
+      "createdAt": "2026-07-19T06:36:42.685Z",
+      "updatedAt": "2026-07-19T06:36:42.706Z",
+      "timeline": "[{\"status\":\"Closed\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.706Z\",\"remarks\":\"Item officially dispatched with release note AVN-DISP-88899.\"},{\"status\":\"Completed\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.700Z\",\"remarks\":\"Technical report logged: Workshop Repair Report.\"},{\"status\":\"Repair Completed\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.692Z\",\"remarks\":\"Technical calibration/diagnostic measurements successfully recorded.\"},{\"status\":\"Assigned\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.687Z\",\"remarks\":\"Bob builder assigned to workshop micro-soldering station #4\"},{\"status\":\"Pending Assignment\",\"updatedBy\":\"Test Administrator\",\"updatedAt\":\"2026-07-19T06:36:42.685Z\",\"remarks\":\"Service Request Ticket Initiated in Workspace Registry.\"}]",
+      "workshopJobData": "{\"measurements\":{\"laserIntensity\":\"11.5 mW\",\"inputVoltage\":\"230V AC\",\"chamberPressure\":\"0.05 mbar\"},\"acceptanceDate\":\"2026-07-19T06:36:42.700Z\",\"itemSerialNumber\":\"WS-TEST-888\",\"institute\":\"General Hospital Kandy\",\"departmentSection\":\"Workshop Bench #4\",\"contactName\":\"Dr. Samantha\",\"contactNumber\":\"0771234567\",\"warrantyStatus\":\"Non-Warranty\",\"partsReceivedWithItem\":\"Main Unit, Cables\",\"takenByDeliveryPerson\":\"Courier services\",\"repairSteps\":[\"Resoldered laser power IC block\",\"Calibrated sensor gain offset\"],\"testResult\":\"Pass\",\"testHours\":4}"
+    }
+  ],
+  "kpi_master": [
+    {
+      "id": "353491ad-89f2-4ea6-89d4-68fe5b14f84a",
+      "name": "Service SLA Compliance",
+      "description": "Optics and service completion SLA compliance rates",
+      "weight": 50,
+      "targetValue": "95%",
+      "roleType": "Engineer"
+    },
+    {
+      "id": "62cd2bf4-adae-438a-991f-566bb0d7c8f8",
+      "name": "Customer Satisfaction Index",
+      "description": "Feedback and Net Promoter Scores from clients",
+      "weight": 50,
+      "targetValue": "9.0/10",
+      "roleType": "Engineer"
+    }
+  ],
+  "employee_kpi_assignments": [
+    {
+      "id": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "employeeId": "usr-eng-bob",
+      "kpiId": "353491ad-89f2-4ea6-89d4-68fe5b14f84a",
+      "financialYearId": "FY2026",
+      "currentValue": "100% SLA Met (2/2 Jobs)",
+      "score": 100,
+      "errorsCount": 0
+    },
+    {
+      "id": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "employeeId": "usr-eng-bob",
+      "kpiId": "62cd2bf4-adae-438a-991f-566bb0d7c8f8",
+      "financialYearId": "FY2026",
+      "currentValue": "No client reviews yet",
+      "score": 100,
+      "errorsCount": 0
+    }
+  ],
+  "kpi_measurements": [
+    {
+      "id": "8f5ae11e-b7c8-4920-9b82-825d8eb24e5e",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "0% SLA Met (0/1 Jobs)",
+      "scoreCalculated": 0,
+      "recordedAt": "2026-07-19T06:36:42.660Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "45b939f5-cefc-4e46-b93f-270157c60894",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.661Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "6c89ddb3-dd85-463a-b509-299b6021198c",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "0% SLA Met (0/1 Jobs)",
+      "scoreCalculated": 0,
+      "recordedAt": "2026-07-19T06:36:42.663Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "4327179c-ab0c-4c3a-a5c4-165beccfcad0",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.663Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "34473ce9-280c-4856-abbb-f049687423cf",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "0% SLA Met (0/1 Jobs)",
+      "scoreCalculated": 0,
+      "recordedAt": "2026-07-19T06:36:42.667Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "2d25db20-6397-4171-8251-f0126a33125c",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.667Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "ad31862d-0a45-4ba4-9cf3-776ffa81a549",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "0% SLA Met (0/1 Jobs)",
+      "scoreCalculated": 0,
+      "recordedAt": "2026-07-19T06:36:42.668Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "444e834e-c163-4122-9cdc-18ea6d637d7b",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.669Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "08e77aca-ff36-408c-b940-65e105dfc1ab",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (1/1 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.674Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "f6292b51-52f5-4e53-8c5b-d08350c16370",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.675Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "a2bab2dd-60ba-4c7b-a882-07e3f06b5a03",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (1/1 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.677Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "73b85f23-07aa-48a6-8511-76c5fc43ad4f",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.678Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "2c8d726e-6209-4797-8dc2-7c9045d59ff8",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (1/1 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.679Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "2322eb23-ba38-4089-9a24-894c62052fb7",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.681Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "ea363221-6c7e-4741-9349-434ee20ca029",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "50% SLA Met (1/2 Jobs)",
+      "scoreCalculated": 50,
+      "recordedAt": "2026-07-19T06:36:42.688Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "9a71d62b-b510-476b-89cd-df81f37b27e0",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.689Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "0bae6e3d-8f0d-4e0d-8ad6-bb3c415f60db",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "50% SLA Met (1/2 Jobs)",
+      "scoreCalculated": 50,
+      "recordedAt": "2026-07-19T06:36:42.690Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "6d2ab65b-f28f-4808-84b2-c29c61b09a8c",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.691Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "3f93bca9-f186-497f-97b8-a7e645c853eb",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "50% SLA Met (1/2 Jobs)",
+      "scoreCalculated": 50,
+      "recordedAt": "2026-07-19T06:36:42.694Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "63ffdfc1-9f0f-46cc-b8be-6c82fc46290e",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.697Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "64caa8b6-e725-46f7-8379-7bb053d25edb",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "50% SLA Met (1/2 Jobs)",
+      "scoreCalculated": 50,
+      "recordedAt": "2026-07-19T06:36:42.698Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "4da4dc66-b0e4-4a11-9a3a-2000880a2c52",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.699Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "b9f29295-ed5a-4636-89f0-a80df1eedafc",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (2/2 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.702Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "8b25d7f4-c6de-4bee-8a98-7f64bfe7ac96",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.703Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "e7da1505-d829-4339-94a2-902f329dd4f2",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (2/2 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.704Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "88350919-2063-4917-abe8-a7ed248830d4",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.704Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "aadbb906-70f0-4b10-986e-a39a1eb62b5f",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (2/2 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.708Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "d1d4619c-411e-4837-b57e-55f4d88486fa",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.708Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "dea9c8ef-23b5-4a20-bab5-18ab226b14bc",
+      "kpiAssignmentId": "d865e353-37ea-4bb9-ba69-117cf2a9ff0c",
+      "measuredValue": "100% SLA Met (2/2 Jobs)",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.711Z",
+      "remarks": "System automated cron calculation"
+    },
+    {
+      "id": "6c1e888c-d47a-4c88-8327-bd7f19aaafd1",
+      "kpiAssignmentId": "b2bbe3a0-4ba2-4955-9f2a-a853b121a596",
+      "measuredValue": "No client reviews yet",
+      "scoreCalculated": 100,
+      "recordedAt": "2026-07-19T06:36:42.712Z",
+      "remarks": "System automated cron calculation"
+    }
+  ],
+  "amc_contracts": [],
+  "amc_renewals": [],
+  "instrument_assets": [
+    {
+      "id": "ast-1",
+      "assetNumber": "AST-JOB-TEST-999",
+      "serialNumber": "JOB-TEST-999",
+      "brand": "SHIMADZU",
+      "model": "Prominence LC-2030",
+      "description": "Shimadzu Prominence Chromatograph",
+      "warrantyPeriodMonths": 12,
+      "customerName": "Lanka Hospitals Lab",
+      "department": "Biochemistry",
+      "serviceHistoryCount": 0,
+      "repairHistoryCount": 0,
+      "totalRevenueGenerated": 0
+    },
+    {
+      "id": "ast-2",
+      "assetNumber": "AST-WS-TEST-888",
+      "serialNumber": "WS-TEST-888",
+      "brand": "THERMO SCIENTIFIC",
+      "model": "QuantStudio 5",
+      "description": "Thermo PCR Thermocycler",
+      "warrantyPeriodMonths": 24,
+      "customerName": "Asiri Surgical Lab",
+      "department": "Molecular",
+      "serviceHistoryCount": 0,
+      "repairHistoryCount": 0,
+      "totalRevenueGenerated": 0
+    }
+  ],
+  "user_profiles": [
+    {
+      "id": "usr_sys_admin",
+      "name": "System Admin",
+      "email": "administrator@avon.lk",
+      "role": "System Admin",
+      "tags": "[]",
+      "avatarUrl": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120",
+      "territory": "Colombo Headquarters",
+      "passwordHash": "$2b$10$SSx3POteSZ5O4Z.nIFxBPe3cy.lDrRZeGsZAlTSVCiQ4xQqqaQjfa"
+    },
+    {
+      "id": "usr_admin",
+      "name": "Admin",
+      "email": "admin@avon.lk",
+      "role": "Admin",
+      "tags": "[]",
+      "avatarUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120",
+      "territory": "Colombo Head Office",
+      "passwordHash": "$2b$10$SSx3POteSZ5O4Z.nIFxBPejeiV5ofUIvwV3ubbMgp1lya98hAs.6S"
+    },
+    {
+      "id": "usr_cherub",
+      "name": "Cherub Weeratunge",
+      "email": "cherub@avonpclk.com",
+      "role": "Workshop Manager",
+      "tags": "[\"Workshop Engineer\", \"Calibration Engineer\"]",
+      "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+      "territory": "Colombo Head Office",
+      "passwordHash": "$2b$10$SSx3POteSZ5O4Z.nIFxBPeT8JE7A48J00htgLmuuvXHFRptaMpLtS"
+    }
+  ]
+}

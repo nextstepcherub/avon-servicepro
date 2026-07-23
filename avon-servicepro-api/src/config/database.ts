@@ -4,7 +4,6 @@ import { logger } from './logger';
 import { config } from './environment';
 import fs from 'fs';
 import path from 'path';
-import bcrypt from 'bcryptjs';
 
 export interface DatabasePool {
   getConnection(): Promise<any>;
@@ -34,32 +33,29 @@ function loadMockTables() {
       logger.info('Database: No avon_database.json found, starting with initial seeds.');
     }
 
-    if (!mockTables['user_profiles']) {
-      mockTables['user_profiles'] = [];
+    if (!mockTables['users']) {
+      mockTables['users'] = [];
     }
 
-    if (mockTables['user_profiles'].length === 0) {
-      logger.info('Database: Seeding default user_profiles...');
-      const salt = bcrypt.genSaltSync(10);
-      mockTables['user_profiles'].push({
+    if (mockTables['users'].length === 0) {
+      logger.info('Database: Seeding default users...');
+      mockTables['users'].push({
         id: 'usr_sys_admin',
         name: 'System Admin',
         email: 'administrator@avon.lk',
         role: 'System Admin',
         tags: '[]',
         avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120',
-        territory: 'Colombo Headquarters',
-        passwordHash: bcrypt.hashSync('Superstar', salt)
+        territory: 'Colombo Headquarters'
       });
-      mockTables['user_profiles'].push({
+      mockTables['users'].push({
         id: 'usr_admin',
         name: 'Admin',
         email: 'admin@avon.lk',
         role: 'Admin',
         tags: '[]',
         avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120',
-        territory: 'Colombo Head Office',
-        passwordHash: bcrypt.hashSync('Cherub', salt)
+        territory: 'Colombo Head Office'
       });
     }
 
@@ -375,7 +371,7 @@ function executeMockQuery(sql: string, params: any[] = []): any {
   }
 
   if (cleanSql.includes('sum(eka.score * km.weight)')) {
-    const users = mockTables['user_profiles'] || [
+    const users = mockTables['users'] || [
       { id: 'usr-eng-bob', name: 'Bob Builder', email: 'bob@avon.lk', role: 'Engineer' }
     ];
     const assignments = mockTables['employee_kpi_assignments'] || [];
@@ -414,12 +410,16 @@ function executeMockQuery(sql: string, params: any[] = []): any {
   }
 
   let tableName = '';
-  const tableMatches = sql.match(/(?:from|into|update|join|delete\s+from)\s+\`?(\w+)\`?/i);
+  const tableMatches = sql.match(/(?:from|into|update|join|delete\s+from)\s+\`?([\w.]+)\`?/i);
   if (tableMatches && tableMatches[1]) {
     tableName = tableMatches[1];
   } else {
-    const tblMatch = sql.match(/(?:update|delete\s+from)\s+\`?(\w+)\`?/i);
+    const tblMatch = sql.match(/(?:update|delete\s+from)\s+\`?([\w.]+)\`?/i);
     if (tblMatch && tblMatch[1]) tableName = tblMatch[1];
+  }
+  
+  if (tableName === 'users' || tableName === 'public.users' || tableName === 'public' || tableName === 'user_profiles') {
+    tableName = 'users';
   }
   
   if (!mockTables[tableName]) {
@@ -595,6 +595,152 @@ function cleanSqlForPostgres(sql: string): string {
   return cleaned;
 }
 
+const camelCaseMap: Record<string, string> = {
+  ticketnumber: 'ticketNumber',
+  instrumentid: 'instrumentId',
+  instrumentname: 'instrumentName',
+  serialnumber: 'serialNumber',
+  customerid: 'customerId',
+  customername: 'customerName',
+  createdat: 'createdAt',
+  updatedat: 'updatedAt',
+  resolvedat: 'resolvedAt',
+  downtimehours: 'downTimeHours',
+  workshopbench: 'workshopBench',
+  estimatedcost: 'estimatedCost',
+  billingapproved: 'billingApproved',
+  sladuedate: 'slaDueDate',
+  sladayssetting: 'slaDaysSetting',
+  slastatus: 'slaStatus',
+  jobtype: 'jobType',
+  assignedengineerid: 'assignedEngineerId',
+  assignedengineername: 'assignedEngineerName',
+  createdbyid: 'createdById',
+  createdbyrole: 'createdByRole',
+  partsreceiving: 'partsReceiving',
+  installationdata: 'installationData',
+  warrantyservicedata: 'warrantyServiceData',
+  nonwarrantydata: 'nonWarrantyData',
+  warrantyrepairdata: 'warrantyRepairData',
+  workshopjobdata: 'workshopJobData',
+  calibrationdata: 'calibrationData',
+  targetresolutiondate: 'targetResolutionDate',
+  requestedby: 'requestedBy',
+  assignedat: 'assignedAt',
+  lastpmdate: 'lastPmDate',
+  nextpmdate: 'nextPmDate',
+  nextserviceinterval: 'nextServiceInterval',
+  nextservicedate: 'nextServiceDate',
+  amcstatus: 'amcStatus',
+  calibrationdue: 'calibrationDue',
+  servicehistorycount: 'serviceHistoryCount',
+  repairhistorycount: 'repairHistoryCount',
+  totalrevenuegenerated: 'totalRevenueGenerated',
+  warrantyperiodmonths: 'warrantyPeriodMonths',
+  invoicevalue: 'invoiceValue',
+  invoicenumber: 'invoiceNumber',
+  warrantycardnumber: 'warrantyCardNumber',
+  endusername: 'endUserName',
+  endusercontact: 'endUserContact',
+  enduserlocation: 'endUserLocation',
+  targetvalue: 'targetValue',
+  roletype: 'roleType',
+  financialyearid: 'financialYearId',
+  currentvalue: 'currentValue',
+  errorscount: 'errorsCount',
+  kpiassignmentid: 'kpiAssignmentId',
+  measurementvalue: 'measurementValue',
+  recordedat: 'recordedAt',
+  iscurrent: 'isCurrent',
+  contractnumber: 'contractNumber',
+  startdate: 'startDate',
+  enddate: 'endDate',
+  contractvalue: 'contractValue',
+  visitseachyear: 'visitsEachYear',
+  visitsdone: 'visitsDone',
+  prepmdone: 'prePmDone',
+  isactive: 'isActive',
+  alerttype: 'alertType',
+  createdby: 'createdBy',
+  isread: 'isRead',
+  documentid: 'documentId',
+  versionnumber: 'versionNumber',
+  filepath: 'filePath',
+  changelog: 'changeLog',
+  uploadedby: 'uploadedBy',
+  uploadedbyname: 'uploadedByName',
+  uploadedbyrole: 'uploadedByRole',
+  docstatus: 'docStatus',
+  documentname: 'documentName',
+  documenttype: 'documentType',
+  viewcount: 'viewCount',
+  islocked: 'isLocked',
+  ipaddress: 'ipAddress',
+  useragent: 'userAgent',
+  userid: 'userId',
+  username: 'userName',
+  userrole: 'userRole',
+  previousvalue: 'previousValue',
+  newvalue: 'newValue',
+
+  // AMC Contract Mappings
+  pminterval: 'pmInterval',
+  slatier: 'slaTier',
+  amctype: 'amcType',
+  coveredassetids: 'coveredAssetIds',
+  escalationrate: 'escalationRate',
+  uptimeguarantee: 'uptimeGuarantee',
+  responsetimehours: 'responseTimeHours',
+  lastreneweddate: 'lastRenewedDate',
+
+  // Query Aliases and Join Columns
+  assignmentid: 'assignmentId',
+  kpiid: 'kpiId',
+  overallscore: 'overallScore',
+  evaluatedby: 'evaluatedBy',
+  evaluatedat: 'evaluatedAt',
+  scorecalculated: 'scoreCalculated',
+  measuredvalue: 'measuredValue'
+};
+
+const numericKeys = new Set([
+  'estimatedcost', 'estimatedCost',
+  'downtimehours', 'downTimeHours',
+  'invoicevalue', 'invoiceValue',
+  'contractvalue', 'contractValue',
+  'overallscore', 'overallScore',
+  'scorecalculated', 'scoreCalculated',
+  'score',
+  'price', 'escalationrate', 'escalationRate',
+  'uptimeguarantee', 'uptimeGuarantee',
+  'responsetimehours', 'responseTimeHours'
+]);
+
+function mapPostgresRows(rows: any[]): any[] {
+  if (!rows || !Array.isArray(rows)) return rows;
+  return rows.map(row => {
+    if (!row || typeof row !== 'object') return row;
+    const mapped = { ...row };
+    for (let [key, value] of Object.entries(row)) {
+      const camelKey = camelCaseMap[key];
+
+      // Automatically cast numeric column strings to proper float numbers
+      if (numericKeys.has(key) && typeof value === 'string') {
+        const parsed = parseFloat(value);
+        if (!isNaN(parsed)) {
+          value = parsed;
+          mapped[key] = parsed;
+        }
+      }
+
+      if (camelKey && mapped[camelKey] === undefined) {
+        mapped[camelKey] = value;
+      }
+    }
+    return mapped;
+  });
+}
+
 class UnifiedDatabasePool implements DatabasePool {
   private pool: any = null;
   private isConnected = false;
@@ -628,6 +774,7 @@ class UnifiedDatabasePool implements DatabasePool {
   async initialize(): Promise<void> {
     const isPostgres = 
       process.env.DB_TYPE === 'postgres' ||
+      process.env.SUPABASE_DB_URL ||
       config.db.port === 5432 ||
       config.db.port === 6543 ||
       (config.db.host && (
@@ -640,15 +787,19 @@ class UnifiedDatabasePool implements DatabasePool {
     this.isPostgres = !!isPostgres;
 
     if (this.isPostgres) {
-      logger.info(`Connecting to PostgreSQL/Supabase instance at ${config.db.host}:${config.db.port}...`);
-      logger.info(`Database Name: ${config.db.name}`);
+      if (process.env.SUPABASE_DB_URL) {
+        logger.info(`Connecting to PostgreSQL/Supabase instance using SUPABASE_DB_URL...`);
+      } else {
+        logger.info(`Connecting to PostgreSQL/Supabase instance at ${config.db.host}:${config.db.port}...`);
+        logger.info(`Database Name: ${config.db.name}`);
+      }
     } else {
       logger.info(`Connecting to MariaDB instance at ${config.db.host}:${config.db.port}...`);
       logger.info(`Database Name: ${config.db.name}`);
       logger.info(`Connection Limit: ${config.db.connectionLimit}`);
     }
 
-    if (!config.db.host || !config.db.user) {
+    if (!process.env.SUPABASE_DB_URL && (!config.db.host || !config.db.user)) {
       logger.error('Database connection parameters are invalid.');
       throw new Error('Database initialization failed - missing host or user credentials');
     }
@@ -659,19 +810,28 @@ class UnifiedDatabasePool implements DatabasePool {
     for (let i = 0; i < retries; i++) {
       try {
         if (this.isPostgres) {
-          const poolConfig: any = {
-            host: config.db.host,
-            port: config.db.port,
-            user: config.db.user,
-            password: config.db.pass,
-            database: config.db.name,
-            max: config.db.connectionLimit,
-            connectionTimeoutMillis: 10000,
-            idleTimeoutMillis: 30000,
-          };
+          const poolConfig: any = process.env.SUPABASE_DB_URL 
+            ? {
+                connectionString: process.env.SUPABASE_DB_URL,
+                max: config.db.connectionLimit,
+                connectionTimeoutMillis: 10000,
+                idleTimeoutMillis: 30000,
+              }
+            : {
+                host: config.db.host,
+                port: config.db.port,
+                user: config.db.user,
+                password: config.db.pass,
+                database: config.db.name,
+                max: config.db.connectionLimit,
+                connectionTimeoutMillis: 10000,
+                idleTimeoutMillis: 30000,
+              };
 
           // Always enable SSL for remote cloud databases like Supabase, Neon
-          if (config.db.ssl || config.db.host.includes('supabase') || config.db.host.includes('neon')) {
+          if (config.db.ssl || 
+              (process.env.SUPABASE_DB_URL && (process.env.SUPABASE_DB_URL.includes('supabase') || process.env.SUPABASE_DB_URL.includes('neon'))) ||
+              (config.db.host && (config.db.host.includes('supabase') || config.db.host.includes('neon')))) {
             poolConfig.ssl = {
               rejectUnauthorized: config.db.sslRejectUnauthorized || false,
             };
@@ -687,7 +847,7 @@ class UnifiedDatabasePool implements DatabasePool {
             query: async (sql: string, params?: any[]) => {
               const { sql: cleanSql, params: pgParams } = this.translateQuery(sql, params);
               const res = await pgPool.query(cleanSql, pgParams);
-              return [res.rows, null];
+              return [mapPostgresRows(res.rows), null];
             },
             getConnection: async () => {
               const client = await pgPool.connect();
@@ -695,7 +855,7 @@ class UnifiedDatabasePool implements DatabasePool {
                 query: async (sql: string, params?: any[]) => {
                   const { sql: cleanSql, params: pgParams } = this.translateQuery(sql, params);
                   const res = await client.query(cleanSql, pgParams);
-                  return [res.rows, null];
+                  return [mapPostgresRows(res.rows), null];
                 },
                 beginTransaction: async () => {
                   await client.query('BEGIN');

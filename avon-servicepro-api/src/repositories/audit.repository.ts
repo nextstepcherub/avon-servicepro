@@ -6,14 +6,27 @@ import { getRequestContext } from '../utils/requestContext';
 
 export interface AuditLogEntity {
   id: string;
-  timestamp: string;
-  userId: string;
-  userName: string;
-  userRole: string;
+  audit_no?: string;
+  event_time?: string | Date;
+  user_id?: string | null;
+  company_id?: string | null;
+  module?: string;
+  entity_name?: string;
+  entity_id?: string | null;
   action: string;
+  description?: string;
+  success?: number;
+  remarks?: string;
+  ip_address?: string;
+  created_at?: string | Date;
+
+  // Compatibility fields for typescript files calling this repository with legacy properties
+  timestamp?: string;
+  userId?: string;
+  userName?: string;
+  userRole?: string;
   previousValue?: string;
   newValue?: string;
-  remarks?: string;
   ipAddress?: string;
   userAgent?: string;
 }
@@ -22,55 +35,143 @@ export class AuditRepository extends AbstractRepository<AuditLogEntity> {
   async create(entity: Omit<AuditLogEntity, 'id'>): Promise<AuditLogEntity> {
     const id = uuidv4();
     const context = getRequestContext();
-    const ipAddress = entity.ipAddress || context?.ipAddress || '127.0.0.1';
-    const userAgent = entity.userAgent || context?.userAgent || 'System / Direct';
 
-    const newLog: AuditLogEntity = { ...entity, id, ipAddress, userAgent };
-    
-    // Low level logging
-    logger.debug(`Audit Logging triggered: [${newLog.action}] by ${newLog.userName} from ${newLog.ipAddress}`);
-    
+    // Check if we are running in Supabase PostgreSQL
+    if (process.env.SUPABASE_DB_URL) {
+      const timestamp = entity.timestamp || new Date().toISOString();
+      const userid = entity.userId || entity.user_id || context?.userId || 'usr-system';
+      const username = entity.userName || 'System User';
+      const userrole = entity.userRole || 'System';
+      const action = entity.action || 'OTHER';
+      const previousvalue = entity.previousValue || null;
+      const newvalue = entity.newValue || null;
+      const remarks = entity.remarks || entity.description || '';
+      const ipaddress = entity.ipAddress || entity.ip_address || context?.ipAddress || '127.0.0.1';
+      const useragent = entity.userAgent || context?.userAgent || 'System';
+
+      const sql = `
+        INSERT INTO audit_logs (
+          id, timestamp, userid, username, userrole, action, previousvalue, newvalue, remarks, ipaddress, useragent
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      await dbPool.query(sql, [
+        id, timestamp, userid, username, userrole, action, previousvalue, newvalue, remarks, ipaddress, useragent
+      ]);
+
+      return {
+        id,
+        timestamp,
+        userId: userid,
+        userName: username,
+        userRole: userrole,
+        action,
+        previousValue: previousvalue,
+        newValue: newvalue,
+        remarks,
+        ipAddress: ipaddress,
+        userAgent: useragent,
+      } as any;
+    }
+
+    const user_id = entity.user_id || entity.userId || context?.userId || null;
+    const ip_address = entity.ip_address || entity.ipAddress || context?.ipAddress || '127.0.0.1';
+    const audit_no = entity.audit_no || `AUD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const event_time = entity.event_time || new Date();
+    const module = entity.module || 'SYSTEM';
+    const entity_name = entity.entity_name || 'UNKNOWN';
+    const entity_id = entity.entity_id || null;
+    const action = entity.action || 'OTHER';
+    const description = entity.description || entity.remarks || '';
+    const success = entity.success !== undefined ? entity.success : 1;
+    const remarks = entity.remarks || '';
+    const company_id = entity.company_id || null;
+
+    logger.debug(`Audit Logging triggered: [${action}] by user ${user_id} from ${ip_address}`);
+
     const sql = `
       INSERT INTO audit_logs (
-        id, timestamp, userId, userName, userRole, action, previousValue, newValue, remarks, ipAddress, userAgent
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        id, audit_no, event_time, user_id, company_id, module, entity_name, entity_id, action, description, success, remarks, ip_address
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-    
+
     await dbPool.query(sql, [
-      newLog.id, newLog.timestamp, newLog.userId, newLog.userName, newLog.userRole,
-      newLog.action, newLog.previousValue, newLog.newValue, newLog.remarks,
-      newLog.ipAddress, newLog.userAgent
+      id, audit_no, event_time, user_id, company_id, module, entity_name, entity_id, action, description, success, remarks, ip_address
     ]);
-    
-    return newLog;
+
+    const result: AuditLogEntity = {
+      id,
+      audit_no,
+      event_time,
+      user_id,
+      company_id,
+      module,
+      entity_name,
+      entity_id,
+      action,
+      description,
+      success,
+      remarks,
+      ip_address,
+      
+      // Compatibility fields so no consumers break
+      userId: user_id || undefined,
+      ipAddress: ip_address,
+      userAgent: entity.userAgent || 'System'
+    };
+
+    return result;
   }
 
   async findById(id: string): Promise<AuditLogEntity | null> {
     const sql = `SELECT * FROM audit_logs WHERE id = ?`;
     const rows = await dbPool.query(sql, [id]);
-    return rows.length > 0 ? rows[0] as AuditLogEntity : null;
+    if (rows.length === 0) return null;
+    let r = rows[0];
+    if (process.env.SUPABASE_DB_URL) {
+      r = {
+        ...r,
+        userId: r.userid,
+        userName: r.username,
+        userRole: r.userrole,
+        previousValue: r.previousvalue,
+        newValue: r.newvalue,
+        ipAddress: r.ipaddress,
+        userAgent: r.useragent
+      };
+    }
+    return r as AuditLogEntity;
   }
 
   async findAll(options?: QueryOptions): Promise<{ data: AuditLogEntity[]; total: number }> {
     const limit = options?.limit ?? 50;
     const offset = options?.offset ?? 0;
-    const sortBy = options?.sortBy ?? 'timestamp';
+    const sortBy = options?.sortBy ?? (process.env.SUPABASE_DB_URL ? 'timestamp' : 'event_time');
     const sortOrder = options?.sortOrder ?? 'DESC';
-    
+
     let whereClause = '1=1';
     const params: any[] = [];
-    
+
     if (options?.search) {
-      whereClause += ' AND (userName LIKE ? OR action LIKE ? OR remarks LIKE ? OR ipAddress LIKE ?)';
+      if (process.env.SUPABASE_DB_URL) {
+        whereClause += ' AND (action LIKE ? OR remarks LIKE ? OR ipaddress LIKE ?)';
+      } else {
+        whereClause += ' AND (action LIKE ? OR remarks LIKE ? OR ip_address LIKE ? OR description LIKE ?)';
+      }
       const searchPattern = `%${options.search}%`;
-      params.push(searchPattern, searchPattern, searchPattern, searchPattern);
+      if (process.env.SUPABASE_DB_URL) {
+        params.push(searchPattern, searchPattern, searchPattern);
+      } else {
+        params.push(searchPattern, searchPattern, searchPattern, searchPattern);
+      }
     }
-    
-    if (options?.filters?.userId) {
-      whereClause += ' AND userId = ?';
-      params.push(options.filters.userId);
+
+    if (options?.filters?.user_id || options?.filters?.userId) {
+      const col = process.env.SUPABASE_DB_URL ? 'userid' : 'user_id';
+      whereClause += ` AND ${col} = ?`;
+      params.push(options.filters.user_id || options.filters.userId);
     }
-    
+
     const countSql = `SELECT COUNT(*) as total FROM audit_logs WHERE ${whereClause}`;
     const selectSql = `
       SELECT * FROM audit_logs 
@@ -78,21 +179,31 @@ export class AuditRepository extends AbstractRepository<AuditLogEntity> {
       ORDER BY ${sortBy} ${sortOrder} 
       LIMIT ? OFFSET ?
     `;
-    
+
     const totalResult = await dbPool.query(countSql, params);
     const total = totalResult[0]?.total ?? 0;
-    
-    const data = await dbPool.query(selectSql, [...params, limit, offset]) as AuditLogEntity[];
+
+    let data = await dbPool.query(selectSql, [...params, limit, offset]) as AuditLogEntity[];
+    if (process.env.SUPABASE_DB_URL) {
+      data = data.map(r => ({
+        ...r,
+        userId: (r as any).userid,
+        userName: (r as any).username,
+        userRole: (r as any).userrole,
+        previousValue: (r as any).previousvalue,
+        newValue: (r as any).newvalue,
+        ipAddress: (r as any).ipaddress,
+        userAgent: (r as any).useragent
+      } as any));
+    }
     return { data, total };
   }
 
-  // Not typically supported for audit trails (immutable logs), but satisfies interface
   async update(id: string, _entity: Partial<AuditLogEntity>): Promise<AuditLogEntity> {
     logger.error('Security alert: Attempt to modify immutable audit trail record!');
     throw new Error('Audit trail records are immutable and cannot be modified.');
   }
 
-  // Not supported for compliance
   async delete(_id: string): Promise<boolean> {
     logger.error('Security alert: Attempt to delete audit log record!');
     throw new Error('Audit trail records are immutable and cannot be deleted.');

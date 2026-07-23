@@ -3,6 +3,7 @@ import { userRepository } from '../repositories/user.repository';
 import { logger } from '../config/logger';
 import { BadRequestError, NotFoundError } from '../utils/apiError';
 import { QueryOptions } from '../repositories/base.repository';
+import { dbPool } from '../config/database';
 
 export interface OrgTreeNode extends OrgUnitEntity {
   managerName?: string;
@@ -246,7 +247,7 @@ export class OrgService {
     // Fetch users to map manager names efficiently in-memory
     let userMap = new Map<string, string>();
     try {
-      const { data: users } = await userRepository.findAll({ limit: 1000 });
+      const users = await dbPool.query('SELECT id, name FROM users LIMIT 1000') as any[];
       userMap = new Map(users.map(u => [u.id, u.name]));
     } catch (e) {
       logger.warn(`OrgService: Failed to load user profiles for tree mapping. Error: ${(e as Error).message}`);

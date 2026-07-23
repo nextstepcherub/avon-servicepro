@@ -178,7 +178,7 @@ export class ReportService {
     logger.info(`ReportService: Formulating KPI Report for FY ID: ${financialYearId}`);
 
     // Fetch master KPI lists, employee profiles, assignments
-    const users = await dbPool.query('SELECT * FROM user_profiles') as any[];
+    const users = await dbPool.query('SELECT * FROM users') as any[];
     const assignments = await dbPool.query('SELECT * FROM employee_kpi_assignments WHERE financialYearId = ?', [financialYearId]) as any[];
     const masters = await dbPool.query('SELECT * FROM kpi_master') as any[];
 

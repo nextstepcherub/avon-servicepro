@@ -3,6 +3,7 @@ import { jobService } from '../services/job.service';
 import { jobRepository } from '../repositories/job.repository';
 import { kpiService } from '../services/kpi.service';
 import { kpiRepository } from '../repositories/kpi.repository';
+import { assetRepository } from '../repositories/asset.repository';
 
 const tests: { name: string; fn: () => void | Promise<void> }[] = [];
 
@@ -22,15 +23,29 @@ it('should perform the complete Service Job workflow, assign engineers, log repo
   const actorRole = 'Admin';
 
   const serialNumber = 'JOB-TEST-999';
-  const engineerId = 'usr-eng-bob';
+  const engineerId = 'usr-eng-bob-service';
   const engineerName = 'Bob Builder';
   const financialYearId = 'FY2026';
+
+  // Ensure asset exists in registry
+  const existingAsset = await assetRepository.findBySerialNumber(serialNumber);
+  if (!existingAsset) {
+    await assetRepository.create({
+      assetNumber: `AST-${serialNumber}`,
+      serialNumber: serialNumber,
+      brand: 'SHIMADZU',
+      model: 'Prominence LC-2030',
+      status: 'Active',
+      customerId: 'cust-test-1',
+      customerName: 'Asiri Surgical Test Lab',
+    });
+  }
 
   console.log('1. Cleaning up existing test records...');
   // Clean up any existing records to ensure idempotent test runs
   await dbPool.query('DELETE FROM kpi_measurements WHERE kpiAssignmentId IN (SELECT id FROM employee_kpi_assignments WHERE employeeId = ?)', [engineerId]);
   await dbPool.query('DELETE FROM employee_kpi_assignments WHERE employeeId = ?', [engineerId]);
-  await dbPool.query('DELETE FROM kpi_master WHERE name IN ("Service SLA Compliance", "Customer Satisfaction Index")');
+  await dbPool.query("DELETE FROM kpi_master WHERE name IN ('Service SLA Compliance', 'Customer Satisfaction Index')");
   await dbPool.query('DELETE FROM service_jobs WHERE serialNumber = ?', [serialNumber]);
 
   console.log('2. Seeding KPI Master definition and Employee KPI Assignments...');
@@ -167,8 +182,22 @@ it('should perform the complete Workshop Job lifecycle covering Intake, Assignme
   const actorName = 'Test Administrator';
   const actorRole = 'Admin';
   const serialNumber = 'WS-TEST-888';
-  const engineerId = 'usr-eng-bob';
+  const engineerId = 'usr-eng-bob-workshop';
   const engineerName = 'Bob Builder';
+
+  // Ensure asset exists in registry
+  const existingWSAsset = await assetRepository.findBySerialNumber(serialNumber);
+  if (!existingWSAsset) {
+    await assetRepository.create({
+      assetNumber: `AST-${serialNumber}`,
+      serialNumber: serialNumber,
+      brand: 'SYSMEX',
+      model: 'XN-1000 Hematology Analyzer',
+      status: 'Active',
+      customerId: 'cust-test-1',
+      customerName: 'Asiri Surgical Test Lab',
+    });
+  }
 
   console.log('A. Cleaning up existing workshop test records...');
   await dbPool.query('DELETE FROM service_jobs WHERE serialNumber = ?', [serialNumber]);

@@ -269,7 +269,7 @@ export class DashboardService {
         SUM(eka.score * km.weight) / SUM(km.weight) AS rawCompositeScore,
         SUM(eka.errorsCount) AS totalErrors,
         COUNT(eka.id) AS assignedKpiCount
-      FROM user_profiles up
+      FROM users up
       JOIN employee_kpi_assignments eka ON up.id = eka.employeeId
       JOIN kpi_master km ON eka.kpiId = km.id
       GROUP BY up.id, up.name, up.email, up.role, up.avatarUrl

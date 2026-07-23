@@ -172,9 +172,9 @@ export class RbacRepository {
         rolesMap.get(roleName)!.push(permissionCode);
       }
       
-      // Also fetch distinct roles from user_profiles to ensure any active roles are listed
+      // Also fetch distinct roles from users to ensure any active roles are listed
       try {
-        const userRolesSql = `SELECT DISTINCT role FROM user_profiles WHERE role IS NOT NULL AND role != ''`;
+        const userRolesSql = `SELECT DISTINCT role FROM users WHERE role IS NOT NULL AND role != ''`;
         const userRolesRows = await dbPool.query(userRolesSql);
         for (const uRow of userRolesRows) {
           const rName = uRow.role;
@@ -183,7 +183,7 @@ export class RbacRepository {
           }
         }
       } catch (e) {
-        logger.warn(`RBAC: Could not query distinct roles from user_profiles. Error: ${(e as Error).message}`);
+        logger.warn(`RBAC: Could not query distinct roles from users. Error: ${(e as Error).message}`);
       }
 
       return Array.from(rolesMap.entries()).map(([roleName, permissions]) => ({

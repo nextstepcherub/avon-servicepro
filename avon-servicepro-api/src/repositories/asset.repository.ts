@@ -34,7 +34,16 @@ export interface AssetEntity {
 export class AssetRepository extends AbstractRepository<AssetEntity> {
   async create(entity: Omit<AssetEntity, 'id'>): Promise<AssetEntity> {
     const id = uuidv4();
-    const newAsset: AssetEntity = { ...entity, id };
+    const newAsset: AssetEntity = {
+      description: '',
+      warrantyPeriodMonths: 12,
+      department: 'Laboratory',
+      serviceHistoryCount: 0,
+      repairHistoryCount: 0,
+      totalRevenueGenerated: 0,
+      ...entity,
+      id
+    };
     
     logger.info(`Repository: Saving asset ${id} into instruments table`);
     const sql = `

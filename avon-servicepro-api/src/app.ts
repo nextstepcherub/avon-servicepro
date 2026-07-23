@@ -2,11 +2,13 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+import rateLimit from 'express-rate-limit';
 import { requestLogger } from './middlewares/requestLogger';
 import { errorHandler } from './middlewares/errorHandler';
 import { config } from './config/environment';
 import { dbPool } from './config/database';
 import { requestContextStorage } from './utils/requestContext';
+import { logger } from './config/logger';
 import apiRouter from './routes';
 
 const app: Express = express();
@@ -21,24 +23,74 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Set security HTTP headers
-if (config.nodeEnv === 'production') {
-  app.use(helmet());
-} else {
-  app.use(
-    helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-    })
-  );
-}
+// Set security HTTP headers (configured to allow iframe embedding in the AI Studio preview environment)
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    frameguard: false, // Critical: Allows rendering inside AI Studio iframe preview
+  })
+);
 
-// Enable CORS
-app.use(cors({
-  origin: '*', // Customize this based on production frontend requirements
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// Enable CORS with secure whitelist
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.run.app') || // Allow Google Cloud Run domains
+        origin.startsWith('https://ais-'); // AI Studio specific subdomains
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        logger.warn(`CORS blocked request from unauthorized origin: ${origin}`, { category: 'SECURITY' });
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
+);
+
+// Rate Limiting Middlewares
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000, // Limit each IP to 1000 requests per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many requests from this IP, please try again later.',
+    code: 'TOO_MANY_REQUESTS',
+    details: null,
+  },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 authentication requests per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many authentication attempts from this IP, please try again later.',
+    code: 'TOO_MANY_AUTH_ATTEMPTS',
+    details: null,
+  },
+});
+
+app.use(globalLimiter);
+app.use('/api/auth', authLimiter);
 
 // Request Logger
 app.use(requestLogger);
@@ -61,6 +113,18 @@ app.get('/health', async (req: Request, res: Response) => {
     service: 'avon-servicepro-api',
     uptime: process.uptime(),
     database: isDbHealthy ? 'healthy' : 'unhealthy',
+  });
+});
+
+// Readiness check endpoint
+app.get('/ready', async (req: Request, res: Response) => {
+  const isDbHealthy = await dbPool.testConnection().catch(() => false);
+  const statusCode = isDbHealthy ? 200 : 503;
+  
+  res.status(statusCode).json({
+    status: isDbHealthy ? 'ready' : 'not_ready',
+    timestamp: new Date().toISOString(),
+    service: 'avon-servicepro-api',
   });
 });
 

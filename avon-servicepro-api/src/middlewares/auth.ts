@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { config } from '../config/environment';
+import { supabase } from '../config/supabase';
 import { UnauthorizedError, ForbiddenError } from '../utils/apiError';
 import { logger } from '../config/logger';
 import { userRepository, UserEntity } from '../repositories/user.repository';
@@ -14,7 +13,6 @@ export interface DecodedToken {
   tags: string[];
 }
 
-// Extend Express Request interface to include user and sessionUser
 declare global {
   namespace Express {
     interface Request {
@@ -24,7 +22,7 @@ declare global {
   }
 }
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -35,42 +33,28 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret) as DecodedToken;
-    req.user = decoded;
-    logger.debug(`User authenticated successfully: ${decoded.name} (${decoded.role})`);
-    next();
-  } catch (err) {
-    logger.error(`JWT Verification failed: ${(err as Error).message}`);
-    return next(new UnauthorizedError('Invalid or expired authentication token'));
-  }
-};
+    const { data: { user: supabaseUser }, error } = await supabase.auth.getUser(token);
+    
+    if (error || !supabaseUser) {
+      logger.error(`Supabase getUser verification failed: ${error?.message || 'No user returned'}`);
+      return next(new UnauthorizedError('Invalid or expired authentication token'));
+    }
 
-export const sessionMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+    // Explicit audience validation as part of JWT validation hardening
+    if (supabaseUser.aud !== 'authenticated') {
+      logger.warn(`Security warning: Unexpected audience '${supabaseUser.aud}' for user ${supabaseUser.id}`, { category: 'SECURITY' });
+      return next(new UnauthorizedError('Token verification failed: invalid audience'));
+    }
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    logger.warn(`Session check failed: Missing or invalid authorization header on ${req.originalUrl}`);
-    return next(new UnauthorizedError('No authentication token provided'));
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  try {
-    const decoded = jwt.verify(token, config.jwtSecret) as DecodedToken;
-    req.user = decoded;
-
-    // Load user from database to ensure they exist and have latest roles/tags
-    const user = await userRepository.findById(decoded.id);
+    const user = await userRepository.findById(supabaseUser.id);
     if (!user) {
-      logger.warn(`Session check failed: User ${decoded.id} not found in database`);
+      logger.warn(`Auth check failed: User ${supabaseUser.id} not found in database`);
       return next(new UnauthorizedError('User profile not found. Session invalid.'));
     }
 
-    const { passwordHash: _, ...userWithoutPassword } = user;
-    req.sessionUser = userWithoutPassword;
+    req.sessionUser = user;
 
-    // Sync req.user with latest DB state
-    const tagsArray = JSON.parse(user.tags) as string[];
+    const tagsArray = JSON.parse(user.tags || '[]') as string[];
     req.user = {
       id: user.id,
       name: user.name,
@@ -79,11 +63,11 @@ export const sessionMiddleware = async (req: Request, res: Response, next: NextF
       tags: tagsArray,
     };
 
-    logger.debug(`Session validated via DB for user: ${user.name} (${user.role})`);
+    logger.debug(`User authenticated successfully via Supabase: ${user.name} (${user.role})`);
     next();
   } catch (err) {
-    logger.error(`Session JWT Verification failed: ${(err as Error).message}`);
-    return next(new UnauthorizedError('Invalid or expired session token'));
+    logger.error(`Supabase authentication flow error: ${(err as Error).message}`);
+    return next(new UnauthorizedError('Invalid or expired authentication token'));
   }
 };
 
@@ -95,7 +79,6 @@ export const authorize = (allowedRoles: string[]) => {
 
     const userRole = req.user.role;
 
-    // System Admins always bypass checks
     if (userRole === 'System Admin') {
       return next();
     }
@@ -118,7 +101,6 @@ export const requireRole = (allowedRoles: string | string[]) => {
 
     const userRole = req.user.role;
 
-    // System Admins always bypass checks
     if (userRole === 'System Admin') {
       return next();
     }

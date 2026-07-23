@@ -16,6 +16,7 @@ function assert(condition: any, message: string) {
 
 it('should initialize database for tests', async () => {
   await dbPool.initialize();
+  await dbPool.query('DELETE FROM amc_contracts');
   assert(true, 'Database initialized successfully');
 });
 
@@ -118,6 +119,7 @@ it('should delete an AMC Contract', async () => {
   assert(success === true, 'Deletion should return success true');
 
   const allAfter = await amcService.getAllContracts();
+  console.log('DEBUG [allAfter]:', JSON.stringify(allAfter));
   assert(allAfter.total === 0, 'Contracts count should be 0 after deletion');
 });
 

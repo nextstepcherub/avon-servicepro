@@ -1,6 +1,5 @@
 import { createUserSchema, updateUserSchema, createPermissionSchema, rolePermissionSchema } from '../validators/admin.validator';
 import { adminService } from '../services/admin.service';
-import bcrypt from 'bcryptjs';
 
 // Simple lightweight test runner structure
 const tests: { name: string; fn: () => void | Promise<void> }[] = [];
@@ -101,19 +100,7 @@ it('should validate role-permission mappings with rolePermissionSchema', async (
 });
 
 // 2. Business Logic Unit Tests
-it('should verify password hashing and verification using bcryptjs', async () => {
-  const rawPassword = 'safePassword987';
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(rawPassword, salt);
-
-  assert(hash !== rawPassword, 'Hashed password must not match plain text');
-  
-  const isMatch = await bcrypt.compare(rawPassword, hash);
-  assert(isMatch === true, 'Bcrypt should successfully verify matching plain and hashed password');
-
-  const isNotMatch = await bcrypt.compare('wrongPassword', hash);
-  assert(isNotMatch === false, 'Bcrypt should fail verification for incorrect password');
-});
+// (Removed legacy legacy local bcrypt tests)
 
 // Run all test cases
 async function runAllTests() {

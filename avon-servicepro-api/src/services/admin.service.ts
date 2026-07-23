@@ -4,7 +4,8 @@ import { auditRepository } from '../repositories/audit.repository';
 import { logger } from '../config/logger';
 import { BadRequestError, NotFoundError } from '../utils/apiError';
 import { QueryOptions } from '../repositories/base.repository';
-import bcrypt from 'bcryptjs';
+import { dbPool } from '../config/database';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface UserResponse {
   id: string;
@@ -42,7 +43,37 @@ export class AdminService {
   // User Administration Operations
   async listUsers(options?: QueryOptions): Promise<{ data: UserResponse[]; total: number }> {
     logger.info(`AdminService: Listing users with options: ${JSON.stringify(options)}`);
-    const { data, total } = await userRepository.findAll(options);
+    const limit = options?.limit ?? 50;
+    const offset = options?.offset ?? 0;
+    const sortBy = options?.sortBy ?? 'name';
+    const sortOrder = options?.sortOrder ?? 'ASC';
+    
+    let whereClause = '1=1';
+    const params: any[] = [];
+    
+    if (options?.search) {
+      whereClause += ' AND (name LIKE ? OR email LIKE ? OR territory LIKE ?)';
+      const searchPattern = `%${options.search}%`;
+      params.push(searchPattern, searchPattern, searchPattern);
+    }
+    
+    if (options?.filters?.role) {
+      whereClause += ' AND role = ?';
+      params.push(options.filters.role);
+    }
+    
+    const countSql = `SELECT COUNT(*) as total FROM users WHERE ${whereClause}`;
+    const selectSql = `
+      SELECT * FROM users 
+      WHERE ${whereClause} 
+      ORDER BY ${sortBy} ${sortOrder} 
+      LIMIT ? OFFSET ?
+    `;
+    
+    const totalResult = await dbPool.query(countSql, params);
+    const total = totalResult[0]?.total ?? 0;
+    
+    const data = await dbPool.query(selectSql, [...params, limit, offset]) as UserEntity[];
     return {
       data: data.map(u => this.formatUser(u)),
       total,
@@ -63,7 +94,6 @@ export class AdminService {
       name: string;
       email: string;
       role: string;
-      passwordPlain: string;
       tags?: string[];
       avatarUrl?: string;
       territory?: string;
@@ -74,24 +104,25 @@ export class AdminService {
   ): Promise<UserResponse> {
     logger.info(`AdminService: Actor ${actorName} is creating new user ${userData.email}`);
 
-    const existing = await userRepository.findByEmail(userData.email);
-    if (existing) {
+    const existing = await dbPool.query('SELECT * FROM users WHERE email = ?', [userData.email]);
+    if (existing.length > 0) {
       throw new BadRequestError(`A user with email '${userData.email}' already exists`);
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(userData.passwordPlain, salt);
-
+    const id = uuidv4();
     const tagsArray = userData.tags || [];
-    const newUser = await userRepository.create({
-      name: userData.name,
-      email: userData.email,
-      role: userData.role,
-      tags: JSON.stringify(tagsArray),
-      avatarUrl: userData.avatarUrl,
-      territory: userData.territory,
-      passwordHash: hashedPassword,
-    });
+    const sql = `
+      INSERT INTO users (
+        id, name, email, role, tags, avatarUrl, territory
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    await dbPool.query(sql, [
+      id, userData.name, userData.email, userData.role, JSON.stringify(tagsArray),
+      userData.avatarUrl, userData.territory
+    ]);
+
+    const newUser = await userRepository.findById(id);
 
     // Log administrative audit action
     await auditRepository.create({
@@ -100,11 +131,11 @@ export class AdminService {
       userName: actorName,
       userRole: actorRole,
       action: 'ADMIN_USER_CREATE',
-      newValue: newUser.id,
-      remarks: `Admin created user profile for '${newUser.name}' with role '${newUser.role}'`,
+      newValue: newUser!.id,
+      remarks: `Admin created user profile for '${newUser!.name}' with role '${newUser!.role}'`,
     });
 
-    return this.formatUser(newUser);
+    return this.formatUser(newUser!);
   }
 
   async updateUser(
@@ -113,7 +144,6 @@ export class AdminService {
       name?: string;
       email?: string;
       role?: string;
-      passwordPlain?: string;
       tags?: string[];
       avatarUrl?: string;
       territory?: string;
@@ -130,8 +160,8 @@ export class AdminService {
     }
 
     if (userData.email && userData.email !== existingUser.email) {
-      const emailConflict = await userRepository.findByEmail(userData.email);
-      if (emailConflict) {
+      const emailConflict = await dbPool.query('SELECT * FROM users WHERE email = ?', [userData.email]);
+      if (emailConflict.length > 0) {
         throw new BadRequestError(`Email '${userData.email}' is already taken by another profile`);
       }
     }
@@ -147,12 +177,7 @@ export class AdminService {
       updates.tags = JSON.stringify(userData.tags);
     }
 
-    if (userData.passwordPlain !== undefined && userData.passwordPlain !== '') {
-      const salt = await bcrypt.genSalt(10);
-      updates.passwordHash = await bcrypt.hash(userData.passwordPlain, salt);
-    }
-
-    const updatedUser = await userRepository.update(id, updates);
+    const updatedUser = await userRepository.updateProfile(id, updates);
 
     // Audit changes
     await auditRepository.create({
@@ -180,7 +205,7 @@ export class AdminService {
       throw new BadRequestError('Self-deletion is forbidden');
     }
 
-    const success = await userRepository.delete(id);
+    await dbPool.query('DELETE FROM users WHERE id = ?', [id]);
 
     await auditRepository.create({
       timestamp: new Date().toISOString(),
@@ -191,7 +216,7 @@ export class AdminService {
       remarks: `Admin deleted user profile for '${user.name}' (${user.email})`,
     });
 
-    return success;
+    return true;
   }
 
   // RBAC Roles & Permissions Management

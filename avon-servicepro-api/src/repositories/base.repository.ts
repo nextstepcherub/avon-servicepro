@@ -117,7 +117,8 @@ export class GenericCrudRepository<T extends { id: string }> extends AbstractRep
     const countQuery = builder.buildCount();
 
     const totalResult = await dbPool.query(countQuery.sql, countQuery.params);
-    const total = totalResult[0]?.total ?? 0;
+    const rawTotal = totalResult[0]?.total ?? 0;
+    const total = typeof rawTotal === 'string' ? parseInt(rawTotal, 10) : Number(rawTotal);
 
     const rows = await dbPool.query(query.sql, query.params);
     const data = rows.map((row: any) => this.deserialize(row));

@@ -8,8 +8,7 @@
     "build": "vite build && npm --prefix ./avon-servicepro-api run build",
     "start": "PORT=3000 node avon-servicepro-api/dist/server.js",
     "clean": "rm -rf dist avon-servicepro-api/dist",
-    "lint": "tsc --noEmit",
-    "test": "npm --prefix ./avon-servicepro-api run test"
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -20,7 +19,6 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
-    "express-rate-limit": "^8.6.0",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.546.0",

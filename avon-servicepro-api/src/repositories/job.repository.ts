@@ -109,7 +109,7 @@ export class JobRepository extends AbstractRepository<JobEntity> {
       throw new Error(`Job with ID ${id} not found`);
     }
     
-    const keys = Object.keys(entity).filter(key => key !== 'id' && key !== 'updatedAt' && key !== 'updatedat');
+    const keys = Object.keys(entity).filter(key => key !== 'id');
     const setClause = keys.map(key => `${key} = ?`).join(', ');
     const params = keys.map(key => (entity as any)[key]);
     

@@ -38,7 +38,7 @@ it('should perform the complete installation workflow, assign engineers, advance
     await dbPool.query('DELETE FROM installations WHERE id = ?', [oldInst.id]);
   }
   await dbPool.query('DELETE FROM instrument_assets WHERE serialNumber = ?', [serialNumber]);
-  await dbPool.query("DELETE FROM service_jobs WHERE serialNumber = ? AND jobType = 'Installation'", [serialNumber]);
+  await dbPool.query('DELETE FROM service_jobs WHERE serialNumber = ? AND jobType = "Installation"', [serialNumber]);
 
   // Step A: Create an asset first in the asset database registry (since service job creation verifies asset existence!)
   const testAsset = await assetRepository.create({

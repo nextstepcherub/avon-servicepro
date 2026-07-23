@@ -23,10 +23,7 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info) => {
-      const category = info.category ? ` [${info.category}]` : '';
-      return `[${info.timestamp}] [${info.level}]${category}: ${info.message}`;
-    },
+    (info) => `[${info.timestamp}] [${info.level}]: ${info.message}`,
   ),
 );
 

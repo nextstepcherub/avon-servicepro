@@ -35,45 +35,6 @@ export class AuditRepository extends AbstractRepository<AuditLogEntity> {
   async create(entity: Omit<AuditLogEntity, 'id'>): Promise<AuditLogEntity> {
     const id = uuidv4();
     const context = getRequestContext();
-
-    // Check if we are running in Supabase PostgreSQL
-    if (process.env.SUPABASE_DB_URL) {
-      const timestamp = entity.timestamp || new Date().toISOString();
-      const userid = entity.userId || entity.user_id || context?.userId || 'usr-system';
-      const username = entity.userName || 'System User';
-      const userrole = entity.userRole || 'System';
-      const action = entity.action || 'OTHER';
-      const previousvalue = entity.previousValue || null;
-      const newvalue = entity.newValue || null;
-      const remarks = entity.remarks || entity.description || '';
-      const ipaddress = entity.ipAddress || entity.ip_address || context?.ipAddress || '127.0.0.1';
-      const useragent = entity.userAgent || context?.userAgent || 'System';
-
-      const sql = `
-        INSERT INTO audit_logs (
-          id, timestamp, userid, username, userrole, action, previousvalue, newvalue, remarks, ipaddress, useragent
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
-
-      await dbPool.query(sql, [
-        id, timestamp, userid, username, userrole, action, previousvalue, newvalue, remarks, ipaddress, useragent
-      ]);
-
-      return {
-        id,
-        timestamp,
-        userId: userid,
-        userName: username,
-        userRole: userrole,
-        action,
-        previousValue: previousvalue,
-        newValue: newvalue,
-        remarks,
-        ipAddress: ipaddress,
-        userAgent: useragent,
-      } as any;
-    }
-
     const user_id = entity.user_id || entity.userId || context?.userId || null;
     const ip_address = entity.ip_address || entity.ipAddress || context?.ipAddress || '127.0.0.1';
     const audit_no = entity.audit_no || `AUD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -126,49 +87,26 @@ export class AuditRepository extends AbstractRepository<AuditLogEntity> {
   async findById(id: string): Promise<AuditLogEntity | null> {
     const sql = `SELECT * FROM audit_logs WHERE id = ?`;
     const rows = await dbPool.query(sql, [id]);
-    if (rows.length === 0) return null;
-    let r = rows[0];
-    if (process.env.SUPABASE_DB_URL) {
-      r = {
-        ...r,
-        userId: r.userid,
-        userName: r.username,
-        userRole: r.userrole,
-        previousValue: r.previousvalue,
-        newValue: r.newvalue,
-        ipAddress: r.ipaddress,
-        userAgent: r.useragent
-      };
-    }
-    return r as AuditLogEntity;
+    return rows.length > 0 ? rows[0] as AuditLogEntity : null;
   }
 
   async findAll(options?: QueryOptions): Promise<{ data: AuditLogEntity[]; total: number }> {
     const limit = options?.limit ?? 50;
     const offset = options?.offset ?? 0;
-    const sortBy = options?.sortBy ?? (process.env.SUPABASE_DB_URL ? 'timestamp' : 'event_time');
+    const sortBy = options?.sortBy ?? 'event_time';
     const sortOrder = options?.sortOrder ?? 'DESC';
 
     let whereClause = '1=1';
     const params: any[] = [];
 
     if (options?.search) {
-      if (process.env.SUPABASE_DB_URL) {
-        whereClause += ' AND (action LIKE ? OR remarks LIKE ? OR ipaddress LIKE ?)';
-      } else {
-        whereClause += ' AND (action LIKE ? OR remarks LIKE ? OR ip_address LIKE ? OR description LIKE ?)';
-      }
+      whereClause += ' AND (action LIKE ? OR remarks LIKE ? OR ip_address LIKE ? OR description LIKE ?)';
       const searchPattern = `%${options.search}%`;
-      if (process.env.SUPABASE_DB_URL) {
-        params.push(searchPattern, searchPattern, searchPattern);
-      } else {
-        params.push(searchPattern, searchPattern, searchPattern, searchPattern);
-      }
+      params.push(searchPattern, searchPattern, searchPattern, searchPattern);
     }
 
     if (options?.filters?.user_id || options?.filters?.userId) {
-      const col = process.env.SUPABASE_DB_URL ? 'userid' : 'user_id';
-      whereClause += ` AND ${col} = ?`;
+      whereClause += ' AND user_id = ?';
       params.push(options.filters.user_id || options.filters.userId);
     }
 
@@ -183,19 +121,7 @@ export class AuditRepository extends AbstractRepository<AuditLogEntity> {
     const totalResult = await dbPool.query(countSql, params);
     const total = totalResult[0]?.total ?? 0;
 
-    let data = await dbPool.query(selectSql, [...params, limit, offset]) as AuditLogEntity[];
-    if (process.env.SUPABASE_DB_URL) {
-      data = data.map(r => ({
-        ...r,
-        userId: (r as any).userid,
-        userName: (r as any).username,
-        userRole: (r as any).userrole,
-        previousValue: (r as any).previousvalue,
-        newValue: (r as any).newvalue,
-        ipAddress: (r as any).ipaddress,
-        userAgent: (r as any).useragent
-      } as any));
-    }
+    const data = await dbPool.query(selectSql, [...params, limit, offset]) as AuditLogEntity[];
     return { data, total };
   }
 

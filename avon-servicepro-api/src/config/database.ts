@@ -595,152 +595,6 @@ function cleanSqlForPostgres(sql: string): string {
   return cleaned;
 }
 
-const camelCaseMap: Record<string, string> = {
-  ticketnumber: 'ticketNumber',
-  instrumentid: 'instrumentId',
-  instrumentname: 'instrumentName',
-  serialnumber: 'serialNumber',
-  customerid: 'customerId',
-  customername: 'customerName',
-  createdat: 'createdAt',
-  updatedat: 'updatedAt',
-  resolvedat: 'resolvedAt',
-  downtimehours: 'downTimeHours',
-  workshopbench: 'workshopBench',
-  estimatedcost: 'estimatedCost',
-  billingapproved: 'billingApproved',
-  sladuedate: 'slaDueDate',
-  sladayssetting: 'slaDaysSetting',
-  slastatus: 'slaStatus',
-  jobtype: 'jobType',
-  assignedengineerid: 'assignedEngineerId',
-  assignedengineername: 'assignedEngineerName',
-  createdbyid: 'createdById',
-  createdbyrole: 'createdByRole',
-  partsreceiving: 'partsReceiving',
-  installationdata: 'installationData',
-  warrantyservicedata: 'warrantyServiceData',
-  nonwarrantydata: 'nonWarrantyData',
-  warrantyrepairdata: 'warrantyRepairData',
-  workshopjobdata: 'workshopJobData',
-  calibrationdata: 'calibrationData',
-  targetresolutiondate: 'targetResolutionDate',
-  requestedby: 'requestedBy',
-  assignedat: 'assignedAt',
-  lastpmdate: 'lastPmDate',
-  nextpmdate: 'nextPmDate',
-  nextserviceinterval: 'nextServiceInterval',
-  nextservicedate: 'nextServiceDate',
-  amcstatus: 'amcStatus',
-  calibrationdue: 'calibrationDue',
-  servicehistorycount: 'serviceHistoryCount',
-  repairhistorycount: 'repairHistoryCount',
-  totalrevenuegenerated: 'totalRevenueGenerated',
-  warrantyperiodmonths: 'warrantyPeriodMonths',
-  invoicevalue: 'invoiceValue',
-  invoicenumber: 'invoiceNumber',
-  warrantycardnumber: 'warrantyCardNumber',
-  endusername: 'endUserName',
-  endusercontact: 'endUserContact',
-  enduserlocation: 'endUserLocation',
-  targetvalue: 'targetValue',
-  roletype: 'roleType',
-  financialyearid: 'financialYearId',
-  currentvalue: 'currentValue',
-  errorscount: 'errorsCount',
-  kpiassignmentid: 'kpiAssignmentId',
-  measurementvalue: 'measurementValue',
-  recordedat: 'recordedAt',
-  iscurrent: 'isCurrent',
-  contractnumber: 'contractNumber',
-  startdate: 'startDate',
-  enddate: 'endDate',
-  contractvalue: 'contractValue',
-  visitseachyear: 'visitsEachYear',
-  visitsdone: 'visitsDone',
-  prepmdone: 'prePmDone',
-  isactive: 'isActive',
-  alerttype: 'alertType',
-  createdby: 'createdBy',
-  isread: 'isRead',
-  documentid: 'documentId',
-  versionnumber: 'versionNumber',
-  filepath: 'filePath',
-  changelog: 'changeLog',
-  uploadedby: 'uploadedBy',
-  uploadedbyname: 'uploadedByName',
-  uploadedbyrole: 'uploadedByRole',
-  docstatus: 'docStatus',
-  documentname: 'documentName',
-  documenttype: 'documentType',
-  viewcount: 'viewCount',
-  islocked: 'isLocked',
-  ipaddress: 'ipAddress',
-  useragent: 'userAgent',
-  userid: 'userId',
-  username: 'userName',
-  userrole: 'userRole',
-  previousvalue: 'previousValue',
-  newvalue: 'newValue',
-
-  // AMC Contract Mappings
-  pminterval: 'pmInterval',
-  slatier: 'slaTier',
-  amctype: 'amcType',
-  coveredassetids: 'coveredAssetIds',
-  escalationrate: 'escalationRate',
-  uptimeguarantee: 'uptimeGuarantee',
-  responsetimehours: 'responseTimeHours',
-  lastreneweddate: 'lastRenewedDate',
-
-  // Query Aliases and Join Columns
-  assignmentid: 'assignmentId',
-  kpiid: 'kpiId',
-  overallscore: 'overallScore',
-  evaluatedby: 'evaluatedBy',
-  evaluatedat: 'evaluatedAt',
-  scorecalculated: 'scoreCalculated',
-  measuredvalue: 'measuredValue'
-};
-
-const numericKeys = new Set([
-  'estimatedcost', 'estimatedCost',
-  'downtimehours', 'downTimeHours',
-  'invoicevalue', 'invoiceValue',
-  'contractvalue', 'contractValue',
-  'overallscore', 'overallScore',
-  'scorecalculated', 'scoreCalculated',
-  'score',
-  'price', 'escalationrate', 'escalationRate',
-  'uptimeguarantee', 'uptimeGuarantee',
-  'responsetimehours', 'responseTimeHours'
-]);
-
-function mapPostgresRows(rows: any[]): any[] {
-  if (!rows || !Array.isArray(rows)) return rows;
-  return rows.map(row => {
-    if (!row || typeof row !== 'object') return row;
-    const mapped = { ...row };
-    for (let [key, value] of Object.entries(row)) {
-      const camelKey = camelCaseMap[key];
-
-      // Automatically cast numeric column strings to proper float numbers
-      if (numericKeys.has(key) && typeof value === 'string') {
-        const parsed = parseFloat(value);
-        if (!isNaN(parsed)) {
-          value = parsed;
-          mapped[key] = parsed;
-        }
-      }
-
-      if (camelKey && mapped[camelKey] === undefined) {
-        mapped[camelKey] = value;
-      }
-    }
-    return mapped;
-  });
-}
-
 class UnifiedDatabasePool implements DatabasePool {
   private pool: any = null;
   private isConnected = false;
@@ -847,7 +701,7 @@ class UnifiedDatabasePool implements DatabasePool {
             query: async (sql: string, params?: any[]) => {
               const { sql: cleanSql, params: pgParams } = this.translateQuery(sql, params);
               const res = await pgPool.query(cleanSql, pgParams);
-              return [mapPostgresRows(res.rows), null];
+              return [res.rows, null];
             },
             getConnection: async () => {
               const client = await pgPool.connect();
@@ -855,7 +709,7 @@ class UnifiedDatabasePool implements DatabasePool {
                 query: async (sql: string, params?: any[]) => {
                   const { sql: cleanSql, params: pgParams } = this.translateQuery(sql, params);
                   const res = await client.query(cleanSql, pgParams);
-                  return [mapPostgresRows(res.rows), null];
+                  return [res.rows, null];
                 },
                 beginTransaction: async () => {
                   await client.query('BEGIN');

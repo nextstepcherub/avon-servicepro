@@ -40,12 +40,6 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
       return next(new UnauthorizedError('Invalid or expired authentication token'));
     }
 
-    // Explicit audience validation as part of JWT validation hardening
-    if (supabaseUser.aud !== 'authenticated') {
-      logger.warn(`Security warning: Unexpected audience '${supabaseUser.aud}' for user ${supabaseUser.id}`, { category: 'SECURITY' });
-      return next(new UnauthorizedError('Token verification failed: invalid audience'));
-    }
-
     const user = await userRepository.findById(supabaseUser.id);
     if (!user) {
       logger.warn(`Auth check failed: User ${supabaseUser.id} not found in database`);

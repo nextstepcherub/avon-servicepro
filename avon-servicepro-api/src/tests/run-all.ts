@@ -4,8 +4,11 @@ import path from 'path';
 const testFiles = [
   'admin.test.ts',
   'amc.test.ts',
+  'asset.test.ts',
   'audit.test.ts',
+  'auth.test.ts',
   'config.test.ts',
+  'customer.test.ts',
   'dashboard.test.ts',
   'document.test.ts',
   'installation.test.ts',

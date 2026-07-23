@@ -29,7 +29,8 @@ export class KpiService {
     
     // We calculate current scores dynamically from operational tables (SLA, jobs completed, feedback)
     const { data: employeeJobs } = await jobRepository.findAll({
-      filters: { assignedEngineerId: employeeId }
+      filters: { assignedEngineerId: employeeId },
+      limit: 1000
     });
 
     const evaluatedAssignments = [];

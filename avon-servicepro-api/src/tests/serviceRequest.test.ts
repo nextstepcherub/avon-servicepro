@@ -31,7 +31,7 @@ it('should perform the complete service request workflow, assign engineers, trac
     await dbPool.query('DELETE FROM service_request_assignments WHERE requestId = ?', [req.id]);
     await dbPool.query('DELETE FROM service_requests WHERE id = ?', [req.id]);
   }
-  await dbPool.query('DELETE FROM service_jobs WHERE serialNumber = ? AND jobType != "Installation"', [serialNumber]);
+  await dbPool.query("DELETE FROM service_jobs WHERE serialNumber = ? AND jobType != 'Installation'", [serialNumber]);
 
   // Step 1: Create a Service Request (Request Creation & SLA Initiation)
   const reqData = {

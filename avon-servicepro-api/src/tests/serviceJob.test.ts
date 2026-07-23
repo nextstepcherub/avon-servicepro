@@ -30,7 +30,7 @@ it('should perform the complete Service Job workflow, assign engineers, log repo
   // Clean up any existing records to ensure idempotent test runs
   await dbPool.query('DELETE FROM kpi_measurements WHERE kpiAssignmentId IN (SELECT id FROM employee_kpi_assignments WHERE employeeId = ?)', [engineerId]);
   await dbPool.query('DELETE FROM employee_kpi_assignments WHERE employeeId = ?', [engineerId]);
-  await dbPool.query('DELETE FROM kpi_master WHERE name IN ("Service SLA Compliance", "Customer Satisfaction Index")');
+  await dbPool.query("DELETE FROM kpi_master WHERE name IN ('Service SLA Compliance', 'Customer Satisfaction Index')");
   await dbPool.query('DELETE FROM service_jobs WHERE serialNumber = ?', [serialNumber]);
 
   console.log('2. Seeding KPI Master definition and Employee KPI Assignments...');

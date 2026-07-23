@@ -137,7 +137,9 @@ export default function ReportingModule({
   }, [refreshTrigger]);
 
   const loggerDebug = (msg: string) => {
-    console.log(`[ReportingModule] ${msg}`);
+    if (process.env.NODE_ENV !== 'production') {
+      // Internal debug logging in development only
+    }
   };
 
   // 2. Fallback / Mock calculations using active offline-first props

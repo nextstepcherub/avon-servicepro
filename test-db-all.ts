@@ -1,4 +1,3 @@
-import mysql from 'mysql2/promise';
 import pg from 'pg';
 import { createClient } from '@supabase/supabase-js';
 

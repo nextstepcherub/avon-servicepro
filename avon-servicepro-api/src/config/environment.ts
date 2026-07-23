@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load environment variables from .env file with override enabled to prioritize local configurations
+// Load environment variables from root and relative .env files
+dotenv.config({ path: path.join(process.cwd(), '.env'), override: true });
 dotenv.config({ path: path.join(__dirname, '../../.env'), override: true });
 
 export interface Environment {
@@ -26,7 +27,7 @@ export interface Environment {
 }
 
 export const config: Environment = {
-  port: parseInt(process.env.PORT || '3001', 10),
+  port: parseInt(process.env.PORT || '3000', 10),
   nodeEnv: (process.env.NODE_ENV as 'development' | 'production' | 'test') || 'development',
   apiPrefix: '/api',
   db: {

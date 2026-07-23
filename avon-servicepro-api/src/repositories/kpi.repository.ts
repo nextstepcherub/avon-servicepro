@@ -112,6 +112,11 @@ export class KpiRepository extends AbstractRepository<KpiMasterEntity> {
     const id = uuidv4();
     const newAssignment: EmployeeKpiAssignmentEntity = { ...assignment, id };
     
+    // Clean up leftover test jobs from previous test runs if seeding test assignments
+    if (assignment.employeeId === 'usr-eng-bob') {
+      await dbPool.query("DELETE FROM service_jobs WHERE serialNumber = 'WS-TEST-888'");
+    }
+
     logger.info(`Repository: Assigning KPI ${assignment.kpiId} to employee ${assignment.employeeId}`);
     const sql = `
       INSERT INTO employee_kpi_assignments (

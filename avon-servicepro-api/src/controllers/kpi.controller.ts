@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { kpiService } from '../services/kpi.service';
 import { kpiRepository } from '../repositories/kpi.repository';
 import { asyncHandler } from '../utils/asyncHandler';
+import { BadRequestError } from '../utils/apiError';
 
 export const createKpiDefinition = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.id as string;
@@ -39,11 +40,7 @@ export const getEmployeePerformance = asyncHandler(async (req: Request, res: Res
   const { financialYearId } = req.query;
   
   if (!financialYearId) {
-    res.status(400).json({
-      status: 'error',
-      message: 'financialYearId parameter is required',
-    });
-    return;
+    throw new BadRequestError('financialYearId parameter is required');
   }
   
   const assignments = await kpiService.evaluateEmployeeKpis(employeeId, financialYearId as string);
@@ -59,12 +56,9 @@ export const evaluateAndSaveOverallKpis = asyncHandler(async (req: Request, res:
   const evaluatedBy = req.user?.name || req.user?.id || 'System Evaluator';
 
   if (!financialYearId) {
-    res.status(400).json({
-      status: 'error',
-      message: 'financialYearId in body is required',
-    });
-    return;
+    throw new BadRequestError('financialYearId in body is required');
   }
+
 
   const result = await kpiService.createOverallEvaluation(
     employeeId,

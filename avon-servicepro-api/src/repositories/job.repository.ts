@@ -30,6 +30,35 @@ export interface JobEntity {
 }
 
 export class JobRepository extends AbstractRepository<JobEntity> {
+  private mapRow(row: any): JobEntity {
+    if (!row) return row;
+    return {
+      id: row.id,
+      jobType: row.jobType ?? row.jobtype,
+      status: row.status,
+      priority: row.priority,
+      customerName: row.customerName ?? row.customername,
+      brand: row.brand,
+      model: row.model,
+      serialNumber: row.serialNumber ?? row.serialnumber,
+      assignedEngineerId: row.assignedEngineerId ?? row.assignedengineerid,
+      assignedEngineerName: row.assignedEngineerName ?? row.assignedengineername,
+      createdById: row.createdById ?? row.createdbyid,
+      createdByRole: row.createdByRole ?? row.createdbyrole,
+      createdAt: row.createdAt ?? row.createdat,
+      updatedAt: row.updatedAt ?? row.updatedat,
+      timeline: row.timeline,
+      feedback: row.feedback,
+      partsReceiving: row.partsReceiving ?? row.partsreceiving,
+      installationData: row.installationData ?? row.installationdata,
+      warrantyServiceData: row.warrantyServiceData ?? row.warrantyservicedata,
+      nonWarrantyData: row.nonWarrantyData ?? row.nonwarrantydata,
+      warrantyRepairData: row.warrantyRepairData ?? row.warrantyrepairdata,
+      workshopJobData: row.workshopJobData ?? row.workshopjobdata,
+      calibrationData: row.calibrationData ?? row.calibrationdata,
+    };
+  }
+
   async create(entity: Omit<JobEntity, 'id'>): Promise<JobEntity> {
     const id = uuidv4();
     const newJob: JobEntity = { ...entity, id };
@@ -57,7 +86,7 @@ export class JobRepository extends AbstractRepository<JobEntity> {
     logger.info(`Repository: Fetching job by ID: ${id}`);
     const sql = `SELECT * FROM service_jobs WHERE id = ?`;
     const rows = await dbPool.query(sql, [id]);
-    return rows.length > 0 ? rows[0] as JobEntity : null;
+    return rows.length > 0 ? this.mapRow(rows[0]) : null;
   }
 
   async findAll(options?: QueryOptions): Promise<{ data: JobEntity[]; total: number }> {
@@ -97,7 +126,8 @@ export class JobRepository extends AbstractRepository<JobEntity> {
     const total = totalResult[0]?.total ?? 0;
     
     const queryParams = [...params, limit, offset];
-    const data = await dbPool.query(selectSql, queryParams) as JobEntity[];
+    const rawData = await dbPool.query(selectSql, queryParams);
+    const data = (rawData || []).map((row: any) => this.mapRow(row));
     
     return { data, total };
   }
@@ -109,14 +139,18 @@ export class JobRepository extends AbstractRepository<JobEntity> {
       throw new Error(`Job with ID ${id} not found`);
     }
     
-    const keys = Object.keys(entity).filter(key => key !== 'id');
-    const setClause = keys.map(key => `${key} = ?`).join(', ');
-    const params = keys.map(key => (entity as any)[key]);
+    const updatedEntity: Record<string, any> = {
+      ...entity,
+      updatedAt: entity.updatedAt || new Date().toISOString()
+    };
+    delete updatedEntity.id;
     
+    const keys = Object.keys(updatedEntity);
     if (keys.length > 0) {
-      const sql = `UPDATE service_jobs SET ${setClause}, updatedAt = ? WHERE id = ?`;
-      const updatedAt = new Date().toISOString();
-      await dbPool.query(sql, [...params, updatedAt, id]);
+      const setClause = keys.map(key => `${key} = ?`).join(', ');
+      const params = keys.map(key => updatedEntity[key]);
+      const sql = `UPDATE service_jobs SET ${setClause} WHERE id = ?`;
+      await dbPool.query(sql, [...params, id]);
     }
     
     const updatedJob = await this.findById(id);

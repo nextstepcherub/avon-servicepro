@@ -1,13 +1,16 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
 import { requestLogger } from './middlewares/requestLogger';
 import { errorHandler } from './middlewares/errorHandler';
+import { corsMiddleware, securityHeadersMiddleware, payloadSizeErrorHandler } from './middlewares/security';
+import { globalRateLimiter } from './middlewares/rateLimiter';
 import { config } from './config/environment';
 import { dbPool } from './config/database';
 import { requestContextStorage } from './utils/requestContext';
+import { NotFoundError } from './utils/apiError';
 import apiRouter from './routes';
+
 
 const app: Express = express();
 
@@ -21,33 +24,35 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Set security HTTP headers
-if (config.nodeEnv === 'production') {
-  app.use(helmet());
-} else {
-  app.use(
-    helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-    })
-  );
-}
+// Set Helmet Security HTTP Headers
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // Disabled for Vite Dev Server / SPA compatibility
+    crossOriginEmbedderPolicy: false,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  })
+);
 
-// Enable CORS
-app.use(cors({
-  origin: '*', // Customize this based on production frontend requirements
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// Custom Security Headers
+app.use(securityHeadersMiddleware);
+
+// Enable CORS Whitelist
+app.use(corsMiddleware);
+
+// Global Rate Limiting
+app.use('/api', globalRateLimiter);
 
 // Request Logger
 app.use(requestLogger);
 
-// Parse JSON request body with 50mb limit for base64 file uploads
-app.use(express.json({ limit: '50mb' }));
+// Parse JSON request body with 10mb limit
+app.use(express.json({ limit: '10mb' }));
 
-// Parse urlencoded request body with 50mb limit
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// Parse urlencoded request body with 10mb limit
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Handle Request Payload Size Limit Errors
+app.use(payloadSizeErrorHandler);
 
 // Core status check endpoint
 app.get('/health', async (req: Request, res: Response) => {
@@ -95,16 +100,14 @@ if (config.nodeEnv !== 'production') {
   app.use(express.static(distPath));
 
   // Handle unknown routes or SPA fallback
-  app.use('*', (req: Request, res: Response) => {
+  app.use('*', (req: Request, res: Response, next: NextFunction) => {
     if (req.accepts('html')) {
       res.sendFile(path.join(distPath, 'index.html'));
     } else {
-      res.status(404).json({
-        status: 'error',
-        message: `Cannot ${req.method} ${req.originalUrl}. Endpoint not found on this server.`,
-      });
+      next(new NotFoundError(`Cannot ${req.method} ${req.originalUrl}. Endpoint not found on this server.`));
     }
   });
+
 }
 
 // Global error handling middleware

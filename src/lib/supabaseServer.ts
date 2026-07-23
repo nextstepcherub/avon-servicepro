@@ -26,6 +26,9 @@ const SUPABASE_ANON_KEY = getEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY') || getEnv('VIT
  * In a real Next.js 16 App Router environment, this accepts cookies() from 'next/headers'.
  */
 export async function createServerSupabaseClient(cookieStore?: any) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL.includes('placeholder')) {
+    return null;
+  }
   return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: {
       persistSession: false,
@@ -41,7 +44,11 @@ export async function createServerSupabaseClient(cookieStore?: any) {
 export async function getSSRAuthUser(cookieStore?: any): Promise<{ user: DBAuthUser | null; error: string | null }> {
   try {
     const supabase = await createServerSupabaseClient(cookieStore);
+    if (!supabase) {
+      return { user: null, error: 'Supabase client not configured' };
+    }
     const { data: { session }, error } = await supabase.auth.getSession();
+
     
     if (error || !session?.user) {
       return { user: null, error: error?.message || 'No active SSR session' };

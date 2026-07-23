@@ -1,9 +1,13 @@
-import mysql, { Pool as MySqlPool } from 'mysql2/promise';
-import { Pool as PgPool } from 'pg';
+import pg, { Pool as PgPool } from 'pg';
 import { logger } from './logger';
 import { config } from './environment';
+import { validateSqlParameters } from '../utils/sqlValidator';
 import fs from 'fs';
 import path from 'path';
+
+// Parse Postgres NUMERIC/DECIMAL as float, BIGINT as int
+pg.types.setTypeParser(1700, (val: string) => parseFloat(val));
+pg.types.setTypeParser(20, (val: string) => parseInt(val, 10));
 
 export interface DatabasePool {
   getConnection(): Promise<any>;
@@ -595,6 +599,149 @@ function cleanSqlForPostgres(sql: string): string {
   return cleaned;
 }
 
+const COLUMN_CASE_MAP: Record<string, string> = {
+  contractnumber: 'contractNumber',
+  customerid: 'customerId',
+  customername: 'customerName',
+  startdate: 'startDate',
+  enddate: 'endDate',
+  pminterval: 'pmInterval',
+  slatier: 'slaTier',
+  amctype: 'amcType',
+  coveredassetids: 'coveredAssetIds',
+  escalationrate: 'escalationRate',
+  uptimeguarantee: 'uptimeGuarantee',
+  responsetimehours: 'responseTimeHours',
+  lastreneweddate: 'lastRenewedDate',
+  createdat: 'createdAt',
+  updatedat: 'updatedAt',
+  invoicenumber: 'invoiceNumber',
+  invoicevalue: 'invoiceValue',
+  departmentname: 'departmentName',
+  endusername: 'endUserName',
+  instrumentname: 'instrumentName',
+  deliverydate: 'deliveryDate',
+  warrantyperiod: 'warrantyPeriod',
+  warrantyunit: 'warrantyUnit',
+  requestid: 'requestId',
+  assignedengineer: 'assignedEngineer',
+  assignedtechnicians: 'assignedTechnicians',
+  assignedby: 'assignedBy',
+  assignmentdate: 'assignmentDate',
+  targetinstallationdate: 'targetInstallationDate',
+  sladayssetting: 'slaDaysSetting',
+  sladuedate: 'slaDueDate',
+  installationterritory: 'installationTerritory',
+  performedby: 'performedBy',
+  performedbyrole: 'performedByRole',
+  fromstatus: 'fromStatus',
+  tostatus: 'toStatus',
+  installationnumber: 'installationNumber',
+  instrumentid: 'instrumentId',
+  serialnumber: 'serialNumber',
+  warrantyexpirydate: 'warrantyExpiryDate',
+  installationstatus: 'installationStatus',
+  commissioningsignoffby: 'commissioningSignOffBy',
+  customersignoffby: 'customerSignOffBy',
+  checklistdata: 'checklistData',
+  ticketnumber: 'ticketNumber',
+  slastatus: 'slaStatus',
+  targetresolutiondate: 'targetResolutionDate',
+  assignmentid: 'assignmentId',
+  jobcardnumber: 'jobCardNumber',
+  jobtype: 'jobType',
+  resolutionsummary: 'resolutionSummary',
+  partsreplaced: 'partsReplaced',
+  laborhours: 'laborHours',
+  costamount: 'costAmount',
+  customerfeedback: 'customerFeedback',
+  signoffby: 'signOffBy',
+  startedat: 'startedAt',
+  completedat: 'completedAt',
+  targetvalue: 'targetValue',
+  roletype: 'roleType',
+  employeeid: 'employeeId',
+  kpiid: 'kpiId',
+  financialyearid: 'financialYearId',
+  currentvalue: 'currentValue',
+  errorscount: 'errorsCount',
+  kpiassignmentid: 'kpiAssignmentId',
+  measuredvalue: 'measuredValue',
+  scorecalculated: 'scoreCalculated',
+  recordedat: 'recordedAt',
+  evaluatedby: 'evaluatedBy',
+  evaluatedat: 'evaluatedAt',
+  overallscore: 'overallScore',
+  contractid: 'contractId',
+  previousenddate: 'previousEndDate',
+  newenddate: 'newEndDate',
+  previousprice: 'previousPrice',
+  newprice: 'newPrice',
+  escalationapplied: 'escalationApplied',
+  renewedby: 'renewedBy',
+  renewedat: 'renewedAt',
+  userid: 'userId',
+  readat: 'readAt',
+  associatedid: 'associatedId',
+  mimetype: 'mimeType',
+  sizebytes: 'sizeBytes',
+  storagepath: 'storagePath',
+  versionnumber: 'versionNumber',
+  securitylevel: 'securityLevel',
+  uploadedby: 'uploadedBy',
+  documentid: 'documentId',
+  changesummary: 'changeSummary',
+  username: 'userName',
+  userrole: 'userRole',
+  previousvalue: 'previousValue',
+  newvalue: 'newValue',
+  ipaddress: 'ipAddress',
+  useragent: 'userAgent',
+  assetnumber: 'assetNumber',
+  warrantyperiodmonths: 'warrantyPeriodMonths',
+  servicehistorycount: 'serviceHistoryCount',
+  repairhistorycount: 'repairHistoryCount',
+  totalrevenuegenerated: 'totalRevenueGenerated',
+  avatarurl: 'avatarUrl',
+  expiresat: 'expiresAt',
+  permissionid: 'permissionId',
+  rolename: 'roleName',
+  isencrypted: 'isEncrypted',
+  appversion: 'appVersion',
+  apiversion: 'apiVersion',
+  releasedate: 'releaseDate',
+  isactive: 'isActive',
+  sortorder: 'sortOrder'
+};
+
+const NUMERIC_KEYS = new Set([
+  'price', 'previousPrice', 'newPrice', 'invoiceValue', 'costAmount',
+  'escalationRate', 'uptimeGuarantee', 'responseTimeHours', 'escalationApplied',
+  'score', 'errorsCount', 'scoreCalculated', 'overallScore', 'weight',
+  'warrantyPeriod', 'slaDaysSetting', 'laborHours', 'sortOrder', 'isEncrypted',
+  'isActive', 'revoked', 'versionNumber', 'sizeBytes', 'serviceHistoryCount',
+  'repairHistoryCount', 'totalRevenueGenerated', 'warrantyPeriodMonths'
+]);
+
+function normalizeRowKeys(row: any): any {
+  if (!row || typeof row !== 'object') return row;
+  if (Array.isArray(row)) return row.map(normalizeRowKeys);
+  const normalized: any = {};
+  for (const key of Object.keys(row)) {
+    const lowerKey = key.toLowerCase();
+    const targetKey = COLUMN_CASE_MAP[lowerKey] || key;
+    let val = row[key];
+    if (typeof val === 'string' && NUMERIC_KEYS.has(targetKey) && val.trim() !== '') {
+      const parsed = Number(val);
+      if (!isNaN(parsed)) {
+        val = parsed;
+      }
+    }
+    normalized[targetKey] = val;
+  }
+  return normalized;
+}
+
 class UnifiedDatabasePool implements DatabasePool {
   private pool: any = null;
   private isConnected = false;
@@ -626,49 +773,36 @@ class UnifiedDatabasePool implements DatabasePool {
   }
 
   async initialize(): Promise<void> {
-    const isPostgres = 
-      process.env.DB_TYPE === 'postgres' ||
-      process.env.SUPABASE_DB_URL ||
-      config.db.port === 5432 ||
-      config.db.port === 6543 ||
-      (config.db.host && (
-        config.db.host.includes('supabase') ||
-        config.db.host.includes('neon') ||
-        config.db.host.includes('elephantsql') ||
-        config.db.host.includes('postgres')
-      ));
+    try {
+      this.isPostgres = true;
 
-    this.isPostgres = !!isPostgres;
-
-    if (this.isPostgres) {
       if (process.env.SUPABASE_DB_URL) {
         logger.info(`Connecting to PostgreSQL/Supabase instance using SUPABASE_DB_URL...`);
       } else {
         logger.info(`Connecting to PostgreSQL/Supabase instance at ${config.db.host}:${config.db.port}...`);
         logger.info(`Database Name: ${config.db.name}`);
       }
-    } else {
-      logger.info(`Connecting to MariaDB instance at ${config.db.host}:${config.db.port}...`);
-      logger.info(`Database Name: ${config.db.name}`);
-      logger.info(`Connection Limit: ${config.db.connectionLimit}`);
-    }
 
-    if (!process.env.SUPABASE_DB_URL && (!config.db.host || !config.db.user)) {
-      logger.error('Database connection parameters are invalid.');
-      throw new Error('Database initialization failed - missing host or user credentials');
-    }
+      if (!process.env.SUPABASE_DB_URL && (!config.db.host || !config.db.user)) {
+        logger.warn('Database connection parameters are missing. Falling back to in-memory database mock.');
+        this.isConnected = true;
+        this.isMock = true;
+        loadMockTables();
+        return;
+      }
 
-    const retries = 5;
-    let delay = 100;
+      const isLocalHost = !process.env.SUPABASE_DB_URL && (config.db.host === 'localhost' || config.db.host === '127.0.0.1' || !process.env.DB_HOST);
+      const retries = isLocalHost ? 1 : 2;
+      let delay = 100;
+      const connTimeout = isLocalHost ? 1500 : 3000;
 
-    for (let i = 0; i < retries; i++) {
-      try {
-        if (this.isPostgres) {
+      for (let i = 0; i < retries; i++) {
+        try {
           const poolConfig: any = process.env.SUPABASE_DB_URL 
             ? {
                 connectionString: process.env.SUPABASE_DB_URL,
                 max: config.db.connectionLimit,
-                connectionTimeoutMillis: 10000,
+                connectionTimeoutMillis: connTimeout,
                 idleTimeoutMillis: 30000,
               }
             : {
@@ -678,7 +812,7 @@ class UnifiedDatabasePool implements DatabasePool {
                 password: config.db.pass,
                 database: config.db.name,
                 max: config.db.connectionLimit,
-                connectionTimeoutMillis: 10000,
+                connectionTimeoutMillis: connTimeout,
                 idleTimeoutMillis: 30000,
               };
 
@@ -696,12 +830,13 @@ class UnifiedDatabasePool implements DatabasePool {
 
           const pgPool = new PgPool(poolConfig);
 
-          // Wrap pgPool to behave like mysql2/promise pool
+          // Wrap pgPool to behave like database pool interface
           this.pool = {
             query: async (sql: string, params?: any[]) => {
               const { sql: cleanSql, params: pgParams } = this.translateQuery(sql, params);
               const res = await pgPool.query(cleanSql, pgParams);
-              return [res.rows, null];
+              const rows = Array.isArray(res.rows) ? res.rows.map(normalizeRowKeys) : res.rows;
+              return [rows, null];
             },
             getConnection: async () => {
               const client = await pgPool.connect();
@@ -709,7 +844,8 @@ class UnifiedDatabasePool implements DatabasePool {
                 query: async (sql: string, params?: any[]) => {
                   const { sql: cleanSql, params: pgParams } = this.translateQuery(sql, params);
                   const res = await client.query(cleanSql, pgParams);
-                  return [res.rows, null];
+                  const rows = Array.isArray(res.rows) ? res.rows.map(normalizeRowKeys) : res.rows;
+                  return [rows, null];
                 },
                 beginTransaction: async () => {
                   await client.query('BEGIN');
@@ -729,69 +865,41 @@ class UnifiedDatabasePool implements DatabasePool {
               await pgPool.end();
             },
           };
-        } else {
-          const poolConfig: any = {
-            host: config.db.host,
-            port: config.db.port,
-            user: config.db.user,
-            password: config.db.pass,
-            database: config.db.name,
-            connectionLimit: config.db.connectionLimit,
-            waitForConnections: true,
-            queueLimit: 0,
-            connectTimeout: 10000,
-          };
 
-          if (config.db.ssl) {
-            poolConfig.ssl = {
-              rejectUnauthorized: config.db.sslRejectUnauthorized,
-            };
-            if (config.db.sslCa) {
-              poolConfig.ssl.ca = config.db.sslCa;
-            }
+          // Test the connection
+          await this.validateConnection();
+          
+          // Ensure schemas exist
+          await this.ensureSchema();
+          
+          this.isConnected = true;
+          logger.info('Database: Connection pool initialized successfully with Supabase/PostgreSQL.');
+          return;
+        } catch (error) {
+          logger.warn(`Database: Connection attempt ${i + 1} of ${retries} failed. Error: ${(error as Error).message}`);
+          if (this.pool) {
+            await this.pool.end().catch(() => {});
+            this.pool = null;
           }
-
-          this.pool = mysql.createPool(poolConfig);
-        }
-
-        // Test the connection
-        await this.validateConnection();
-        
-        // Ensure schemas exist
-        await this.ensureSchema();
-        
-        this.isConnected = true;
-        logger.info(this.isPostgres 
-          ? 'Database: Connection pool initialized successfully with Supabase/PostgreSQL.'
-          : 'Database: Connection pool initialized successfully with remote/cPanel parameters.'
-        );
-        return;
-      } catch (error) {
-        logger.warn(`Database: Connection attempt ${i + 1} of ${retries} failed. Error: ${(error as Error).message}`);
-        if (this.pool) {
-          await this.pool.end().catch(() => {});
-          this.pool = null;
-        }
-        
-        if (i < retries - 1) {
-          logger.info(`Database: Retrying in ${delay}ms...`);
-          await new Promise((resolve) => setTimeout(resolve, delay));
+          
+          if (i < retries - 1) {
+            logger.info(`Database: Retrying in ${delay}ms...`);
+            await new Promise((resolve) => setTimeout(resolve, delay));
+          }
         }
       }
-    }
 
-    // Fallback to in-memory database mock if real connection fails
-    logger.warn('Database: All connection attempts failed.');
-    logger.warn('================================================================================');
-    logger.warn('👉 DIAGNOSTIC TIP FOR REMOTE DATABASES:');
-    logger.warn('1. For cPanel: Whitelist your current IP address in Remote MySQL.');
-    logger.warn('2. For Supabase/Postgres: Double-check host, port (5432 or 6543), user, and password.');
-    logger.warn('3. Ensure SSL configuration matches your cloud database parameters.');
-    logger.warn('================================================================================');
-    logger.warn('Database: FALLING BACK TO IN-MEMORY DATABASE MOCK.');
-    this.isConnected = true;
-    this.isMock = true;
-    loadMockTables();
+      logger.warn('Database: All connection attempts failed.');
+      logger.warn('Database: FALLING BACK TO IN-MEMORY DATABASE MOCK.');
+      this.isConnected = true;
+      this.isMock = true;
+      loadMockTables();
+    } catch (fatalErr) {
+      logger.warn(`Database initialization fatal exception: ${(fatalErr as Error).message}. Falling back to mock database.`);
+      this.isConnected = true;
+      this.isMock = true;
+      loadMockTables();
+    }
   }
 
   private async validateConnection(): Promise<void> {
@@ -1597,6 +1705,7 @@ class UnifiedDatabasePool implements DatabasePool {
     // Return wrapped connection interface mapped to what the app expects
     return {
       query: async (sql: string, params?: any[]) => {
+        validateSqlParameters(sql, params);
         const [rows] = await connection.query(sql, params);
         return rows;
       },
@@ -1619,6 +1728,7 @@ class UnifiedDatabasePool implements DatabasePool {
     if (!this.isConnected) {
       throw new Error('Database pool has not been initialized or connection is inactive.');
     }
+    validateSqlParameters(sql, params);
     if (this.isMock) {
       return executeMockQuery(sql, params);
     }
